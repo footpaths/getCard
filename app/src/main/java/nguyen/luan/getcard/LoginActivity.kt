@@ -20,6 +20,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.android.synthetic.main.activity_login.*
 import com.google.firebase.database.FirebaseDatabase
+import nguyen.luan.getcard.Utils.ScreenPreference
 import nguyen.luan.getcard.model.DeviceModel
 import nguyen.luan.getcard.model.Emails
 
@@ -104,7 +105,9 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun updateUI() {
+
         currentUser = mAuth!!.currentUser
+
         var email = currentUser?.email
         var emailParam = email
         emailParam = emailParam!!.replace("[-\\[\\]^/,'*:.!><~#$%=?|\"\\\\()]".toRegex(), "")
@@ -113,7 +116,9 @@ class LoginActivity : AppCompatActivity() {
         var deviceParams = DeviceModel("","","","")
 
         myRef.child(emailParam).child(androidId.toString()).setValue(deviceParams)
-
+        ScreenPreference.getInstance(this).saveName = currentUser?.displayName!!
+        ScreenPreference.getInstance(this).saveEmail = emailParam
+        ScreenPreference.getInstance(this).saveAvatar = currentUser?.photoUrl.toString()
         val intent = Intent(this@LoginActivity, MainActivity::class.java)
         startActivity(intent)
         finish()
