@@ -1,5 +1,6 @@
 package nguyen.luan.getcard.fragment
 
+ import android.app.Dialog
  import android.os.Bundle
 
 import android.view.LayoutInflater
@@ -29,7 +30,9 @@ class ChangeCardFragment : Fragment(), View.OnClickListener {
         Glide.with(activity).load(url).error(R.drawable.ic_launcher_background).into(imageView)
         user_name.text = ScreenPreference.instance.saveName
         btnAdd.setOnClickListener {
-
+            val d = Dialog(activity)
+            d.setContentView(R.layout.input_dialog)
+            d.show()
         }
     }
 
