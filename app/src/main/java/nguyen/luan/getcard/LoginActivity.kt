@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import com.facebook.AccessToken
 import com.facebook.CallbackManager
@@ -32,6 +33,8 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+        login_with_facebook.visibility = View.VISIBLE
+
         mAuth = FirebaseAuth.getInstance()
         instance = this
          androidId = Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID)
@@ -48,7 +51,7 @@ class LoginActivity : AppCompatActivity() {
         login_with_facebook.registerCallback(mCallbackManager, object : FacebookCallback<LoginResult> {
             override fun onSuccess(loginResult: LoginResult) {
                 Log.d("kq", "facebook:onSuccess:$loginResult")
-                updateUI()
+                login_with_facebook.visibility = View.GONE
 
                 handleFacebookAccessToken(loginResult.accessToken)
             }
@@ -87,7 +90,7 @@ class LoginActivity : AppCompatActivity() {
 
 
 
-                    // updateUI( )
+                     //updateUI( )
                 } else {
                     // If sign in fails, display a message to the user.
                     //Log.w(FragmentActivity.TAG, "signInWithCredential:failure", task.getException())
