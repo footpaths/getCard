@@ -60,28 +60,6 @@ class MainActivity : AppCompatActivity() {
         moveScreen = MoveScreen(this@MainActivity)
         moveScreen!!.firstMoveFragment(R.id.content, ReceivePointsFragment())
 
-      /*  singout.setOnClickListener {
-            FirebaseAuth.getInstance().signOut()
-            LoginManager.getInstance().logOut()
-            val intent = Intent(this@MainActivity, LoginActivity::class.java)
-            startActivity(intent)
-            finish()
-        }*/
-
-        /*      mAuth!!.signInWithEmailAndPassword("tinh@gmail.com", "123456").addOnCompleteListener(this@MainActivity) { task ->
-                  if (task.isSuccessful) {
-                      // Sign in success, update UI with the signed-in user's information
-                      Toast.makeText(this@MainActivity, "Đăng nhập tcong!!!.",
-                              Toast.LENGTH_SHORT).show()
-                      val user = mAuth!!.currentUser
-                   } else {
-                      // If sign in fails, display a message to the user.
-                      Toast.makeText(this@MainActivity, "Đăng nhập lỗi!!!. Vui lòng kiểm tra tên đănq nhập",
-                              Toast.LENGTH_SHORT).show()
-                  }
-
-              }
-      */
 
       navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
 //

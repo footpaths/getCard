@@ -3,13 +3,13 @@ package nguyen.luan.getcard
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
 import android.widget.Toast
 import com.facebook.AccessToken
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
 import com.facebook.FacebookException
-import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
@@ -18,9 +18,9 @@ import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.android.synthetic.main.activity_login.*
-import com.google.firebase.internal.FirebaseAppHelper.getToken
-import com.google.firebase.auth.AuthCredential
-import androidx.annotation.NonNull
+import com.google.firebase.database.FirebaseDatabase
+import nguyen.luan.getcard.model.DeviceModel
+import nguyen.luan.getcard.model.Emails
 
 
 class LoginActivity : AppCompatActivity() {
@@ -28,14 +28,16 @@ class LoginActivity : AppCompatActivity() {
     var mCallbackManager: CallbackManager? = null
     var currentUser: FirebaseUser? = null
     private var firebaseAuthListener: FirebaseAuth.AuthStateListener? = null
-
+    var androidId:String?=null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
         mAuth = FirebaseAuth.getInstance()
+        instance = this
+         androidId = Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID)
         firebaseAuthListener = FirebaseAuth.AuthStateListener { firebaseAuth ->
-            val user = mAuth!!.currentUser
-            if (user != null) {
+              currentUser = mAuth!!.currentUser
+            if (currentUser != null) {
                 updateUI()
             }
         }
@@ -47,6 +49,7 @@ class LoginActivity : AppCompatActivity() {
             override fun onSuccess(loginResult: LoginResult) {
                 Log.d("kq", "facebook:onSuccess:$loginResult")
                 updateUI()
+
                 handleFacebookAccessToken(loginResult.accessToken)
             }
 
@@ -80,7 +83,9 @@ class LoginActivity : AppCompatActivity() {
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d("kq", "signInWithCredential:success")
-                    val user = mAuth!!.currentUser
+                     currentUser = mAuth!!.currentUser
+
+
 
                     // updateUI( )
                 } else {
@@ -91,26 +96,21 @@ class LoginActivity : AppCompatActivity() {
                     // updateUI( )
                 }
             }
-            /* fun onComplete(task: Task<AuthResult>) {
-                 if (task.isSuccessful()) {
-                     // Sign in success, update UI with the signed-in user's information
-                     Log.d("kq", "signInWithCredential:success")
-                     val user = mAuth!!.getCurrentUser()
-                     updateUI(user)
-                 } else {
-                     // If sign in fails, display a message to the user.
-                     //Log.w(FragmentActivity.TAG, "signInWithCredential:failure", task.getException())
-                     Toast.makeText(this@MainActivity, "Authentication failed.",
-                             Toast.LENGTH_SHORT).show()
-                    // updateUI(null)
-                 }
 
-                 // ...
-             }*/
         })
     }
 
     private fun updateUI() {
+        currentUser = mAuth!!.currentUser
+        var email = currentUser?.email
+        var emailParam = email
+        emailParam = emailParam!!.replace("[-\\[\\]^/,'*:.!><~#$%=?|\"\\\\()]".toRegex(), "")
+        val database = FirebaseDatabase.getInstance()
+        val myRef = database.getReference("User")
+        var deviceParams = DeviceModel("","","","")
+
+        myRef.child(emailParam).child(androidId.toString()).setValue(deviceParams)
+
         val intent = Intent(this@LoginActivity, MainActivity::class.java)
         startActivity(intent)
         finish()
@@ -124,6 +124,14 @@ class LoginActivity : AppCompatActivity() {
     override fun onStop() {
         super.onStop()
         mAuth!!.removeAuthStateListener(this!!.firebaseAuthListener!!)
+    }
+
+    /**
+     * lay du lieu qua lai
+     */
+    companion object {
+        lateinit var instance: LoginActivity
+            private set
     }
 
 }
