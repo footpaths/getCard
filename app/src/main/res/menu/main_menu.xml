@@ -12,6 +12,6 @@
         android:id="@+id/menu_main_singout"
          android:orderInCategory="200"
         app:showAsAction="never"
-         android:title="SingOut" />
+         android:title="Sign Out" />
 
 </menu>

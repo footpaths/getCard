@@ -20,26 +20,31 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.android.synthetic.main.activity_login.*
 import com.google.firebase.database.FirebaseDatabase
+import nguyen.luan.getcard.Utils.DialogLoading
 import nguyen.luan.getcard.model.DeviceModel
 import nguyen.luan.getcard.model.Emails
+import androidx.core.content.ContextCompat.startActivity
+import android.app.ActivityOptions
 
 
 class LoginActivity : AppCompatActivity() {
     private var mAuth: FirebaseAuth? = null
     var mCallbackManager: CallbackManager? = null
     var currentUser: FirebaseUser? = null
+    var dialog: DialogLoading? = null
     private var firebaseAuthListener: FirebaseAuth.AuthStateListener? = null
-    var androidId:String?=null
+    var androidId: String? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
         login_with_facebook.visibility = View.VISIBLE
-
+        var dialog = DialogLoading
+        dialog.ProgressDialogLoader(this@LoginActivity)
         mAuth = FirebaseAuth.getInstance()
         instance = this
-         androidId = Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID)
+        androidId = Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID)
         firebaseAuthListener = FirebaseAuth.AuthStateListener { firebaseAuth ->
-              currentUser = mAuth!!.currentUser
+            currentUser = mAuth!!.currentUser
             if (currentUser != null) {
                 updateUI()
             }
@@ -53,6 +58,8 @@ class LoginActivity : AppCompatActivity() {
                 Log.d("kq", "facebook:onSuccess:$loginResult")
                 login_with_facebook.visibility = View.GONE
 
+
+                dialog.progress_dialog_creation("Loading...")
                 handleFacebookAccessToken(loginResult.accessToken)
             }
 
@@ -86,11 +93,10 @@ class LoginActivity : AppCompatActivity() {
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d("kq", "signInWithCredential:success")
-                     currentUser = mAuth!!.currentUser
+                    currentUser = mAuth!!.currentUser
 
 
-
-                     //updateUI( )
+                    //updateUI( )
                 } else {
                     // If sign in fails, display a message to the user.
                     //Log.w(FragmentActivity.TAG, "signInWithCredential:failure", task.getException())
@@ -110,12 +116,15 @@ class LoginActivity : AppCompatActivity() {
         emailParam = emailParam!!.replace("[-\\[\\]^/,'*:.!><~#$%=?|\"\\\\()]".toRegex(), "")
         val database = FirebaseDatabase.getInstance()
         val myRef = database.getReference("User")
-        var deviceParams = DeviceModel("","","","")
+        var deviceParams = DeviceModel("", "", "", "")
 
         myRef.child(emailParam).child(androidId.toString()).setValue(deviceParams)
-
-        val intent = Intent(this@LoginActivity, MainActivity::class.java)
-        startActivity(intent)
+        dialog?.progress_dialog_dismiss()
+        // var intent = Intent(this@LoginActivity, MainActivity::class.java)
+        // startActivity(intent)
+        val myIntent = Intent(this@LoginActivity, MainActivity::class.java)
+        val options = ActivityOptions.makeCustomAnimation(this@LoginActivity, R.anim.fadein, R.anim.fadeout)
+        this@LoginActivity.startActivity(myIntent, options.toBundle())
         finish()
     }
 

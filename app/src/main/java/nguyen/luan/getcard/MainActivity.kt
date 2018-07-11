@@ -24,6 +24,7 @@ import com.facebook.login.LoginManager
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import nguyen.luan.getcard.Utils.MoveScreen
+import nguyen.luan.getcard.Utils.ScreenPreference
 import nguyen.luan.getcard.fragment.ChangeCardFragment
 import nguyen.luan.getcard.fragment.ReceivePointsFragment
 import nguyen.luan.getcard.fragment.SpinFragment
