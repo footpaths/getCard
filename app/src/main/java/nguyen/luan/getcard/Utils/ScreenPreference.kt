@@ -6,7 +6,7 @@ package nguyen.luan.getcard.Utils
 
 import android.content.Context
 import android.content.SharedPreferences
-
+import nguyen.luan.getcard.LoginActivity
 
 
 class ScreenPreference (private val context: Context) {
@@ -69,23 +69,23 @@ class ScreenPreference (private val context: Context) {
 
 
 
-    var saveLastname: String
+    var saveName: String
 
-        get() = sharedPreferences.getString("shop_id", "")
+        get() = sharedPreferences.getString("name", "")
 
         set(value) {
 
-            sharedPreferences.edit().putString("shop_id", value).apply()
+            sharedPreferences.edit().putString("name", value).apply()
 
         }
 
-    var savePhone: String
+    var saveAvatar: String
 
-        get() = sharedPreferences.getString("phone", "")
+        get() = sharedPreferences.getString("avatar", "")
 
         set(value) {
 
-            sharedPreferences.edit().putString("phone", value).apply()
+            sharedPreferences.edit().putString("avatar", value).apply()
 
         }
 
@@ -111,173 +111,8 @@ class ScreenPreference (private val context: Context) {
 
 
 
-/*
 
-    fun setCartList(tour: CartModel) {
 
-        var list: ArrayList<CartModel>?= ArrayList()
-
-
-
-        list?.addAll(getCartList())
-
-
-
-        list?.add(tour)
-
-        val gson = Gson()
-
-        val json = gson.toJson(list)
-
-        sharedPreferences.edit().putString("cartList", json).apply()
-
-    }
-
-
-
-
-
-    fun getCartList(): ArrayList<CartModel> {
-
-        val gson = Gson()
-
-        var listtemp: ArrayList<CartModel>?= ArrayList()
-
-        val jsontemp = gson.toJson(listtemp)
-
-        val json = sharedPreferences.getString("cartList", jsontemp)
-
-        val type = object : TypeToken<ArrayList<CartModel>>() {
-
-
-
-        }.type
-
-        return gson.fromJson(json, type)
-
-    }
-
-
-
-    fun removeCartList(pos:Int){
-
-        var list: ArrayList<CartModel>?= ArrayList()
-
-
-
-        list?.addAll(getCartList())
-
-
-
-        list?.removeAt(pos)
-
-        val gson = Gson()
-
-        val json = gson.toJson(list)
-
-        sharedPreferences.edit().putString("cartList", json).apply()
-
-    }
-
-    fun deleteTourList(){
-
-        var list: ArrayList<CartModel>?= ArrayList()
-
-        val gson = Gson()
-
-        val json = gson.toJson(list)
-
-        sharedPreferences.edit().putString("cartList", json).apply()
-
-    }
-
-
-
-    fun setCartListLayout(tour: CartModelLayout) {
-
-        var list: ArrayList<CartModelLayout>?= ArrayList()
-
-
-
-        list?.addAll(getCartListLayout())
-
-
-
-        list?.add(tour)
-
-        val gson = Gson()
-
-        val json = gson.toJson(list)
-
-        sharedPreferences.edit().putString("cartListLayout", json).apply()
-
-    }
-
-    fun getCartListLayout(): ArrayList<CartModelLayout> {
-
-        val gson = Gson()
-
-        var listtemp: ArrayList<CartModelLayout>?= ArrayList()
-
-        val jsontemp = gson.toJson(listtemp)
-
-        val json = sharedPreferences.getString("cartListLayout", jsontemp)
-
-        val type = object : TypeToken<ArrayList<CartModelLayout>>() {
-
-
-
-        }.type
-
-        return gson.fromJson(json, type)
-
-    }
-
-
-
-    fun removeCartListLayout(pos:Int){
-
-        var list: ArrayList<CartModelLayout>?= ArrayList()
-
-
-
-        list?.addAll(getCartListLayout())
-
-
-
-        list?.removeAt(pos)
-
-        val gson = Gson()
-
-        val json = gson.toJson(list)
-
-        sharedPreferences.edit().putString("cartListLayout", json).apply()
-
-    }
-
-    fun deleteCartListLayout(){
-
-        var list: ArrayList<CartModelLayout>?= ArrayList()
-
-        val gson = Gson()
-
-        val json = gson.toJson(list)
-
-        sharedPreferences.edit().putString("cartListLayout", json).apply()
-
-    }*/
-
-
-
-    var ischecklogin: Boolean
-
-        get() = sharedPreferences.getBoolean("login", false)
-
-        set(value) {
-
-            sharedPreferences.edit().putBoolean("login", value).apply()
-
-        }
 
 
 
@@ -293,12 +128,11 @@ class ScreenPreference (private val context: Context) {
 
 
 
+
     companion object {
 
 
-
         lateinit var instance:ScreenPreference
-
 
 
         fun getInstance(context: Context): ScreenPreference {
@@ -308,8 +142,8 @@ class ScreenPreference (private val context: Context) {
             return instance
 
 
-
         }
+
 
     }
 

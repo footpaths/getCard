@@ -1,6 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorPrimary">#016dae</color>
+    <color name="colorPrimaryDark">#005283</color>
+    <color name="colorAccent">#016dae</color>
+    <color name="colorWhite">#ffffff</color>
+    <color name="coloryellow">#ffff00</color>
+    <color name="colorWhiteDark">#d1cfcf</color>
+     <color name="colorBlack">#000000</color>
+    <color name="colorRed">#df2020</color>
+    <color name="black_overlay">#66000000</color>
+    <color name="color_dark">#66a9a9a9</color>
+    <color name="color_dark_black">#3d3d3d</color>
+    <color name="color_dark_white">#b4b3b3</color>
+    <color name="color_main">#016dae</color>
+    <color name="color_main_light">#89d3eeff</color>
+    <color name="color_main_white">#32a6ec</color>
+    <color name="color_orange">#ed7144</color>
+    <color name="light_gray">#dbdbdb</color>
+    <color name="light_white">#f7f5f5</color>
+    <color name="gray">#7e7e7e</color>
+    <color name="semi_gray">#979797</color>
+    <color name="dark_gray">#696969</color>
+    <color name="transparent_white">#00ffffff</color>
+    <color name="transparent_black">#9d0e0e0e</color>
+    <item name="text_grey" type="color">#8f8f8f</item>
+    <item name="red" type="color">#F44336</item>
+    <item name="indigo" type="color">#3F51B5</item>
+    <item name="green" type="color">#4CAF50</item>
+    <item name="orange" type="color">#FF9800</item>
+    <item name="blue" type="color">#2196F3</item>
+    <item name="yellow" type="color">#FFEB3B</item>>
+    <item name="grey" type="color">#9E9E9E</item>
+    <item name="bluegrey" type="color">#607D8B</item>
+    <item name="amber" type="color">#FFC107</item>
+    <item name="teal" type="color">#009688</item>#009688
+    <item name="deeppurple" type="color">#673AB7</item>
+    <item name="cyan" type="color">#00BCD4</item>
+    <item name="brown" type="color">#795548</item>
+    <color name="gplus_color_1">#3e802f</color>
+    <color name="gplus_color_2">#f4b400</color>
+    <color name="gplus_color_3">#427fed</color>
+    <color name="gplus_color_4">#b23424</color>
+    <integer-array name="gplus_colors">
+        <item>@color/gplus_color_1</item>
+        <item>@color/gplus_color_2</item>
+        <item>@color/gplus_color_3</item>
+        <item>@color/gplus_color_4</item>
+    </integer-array>
+    <color name="green_item">#8ca929</color>
+    <color name="gen_black">#000000</color>
+    <color name="gen_white">#FFFFFF</color>
+    <color name="green_light">#43A047</color>
+    <color name="grey_light">#E0E0E0</color>
+    <color name="cyan_500">#00bcd4</color>
+
+    <color name="stepper_background">#8a8eff</color>
+    <color name="stepper_button">#ffffff</color>
+    <color name="stepper_text">#6d72ff</color>
+    <color name="stepper_actions">#fff</color>
+    <color name="stepper_actions_disabled">#85ffffff</color>
+
+    <color name="stepper_background_blue">#f5f5f5</color>
+    <color name="stepper_text_blue">#3da8fe</color>
+    <color name="stepper_actions_blue">#98d1ff</color>
+
+    <!--DEFAULTS-->
+    <color name="defaultBgColor">#323232</color>
+    <color name="defaultActionColor">#19B491</color>
+
+
+
+    <!--MATERIAL-->
+    <color name="successMaterial">#4CAF50</color>
+    <color name="warningMaterial">#FFC107</color>
+    <color name="errorMaterial">#F44336</color>
+    <color name="infoMaterial">#2196F3</color>
+    <color name="actionSuccessMaterial">#FFC107</color>
+    <color name="actionWarningMaterial">#4CAF50</color>
+    <color name="actionErrorMaterial">#FFC107</color>
+    <color name="actionInfoMaterial">#FFC107</color>
+
+    <!--RETRO-->
+    <color name="successRetro">#88D8B0</color>
+    <color name="warningRetro">#FFCC5C</color>
+    <color name="errorRetro">#FF6F69</color>
+    <color name="infoRetro">#8FD4D9</color>
+    <color name="actionSuccessRetro">#bbffffff</color>
+    <color name="actionWarningRetro">#bbffffff</color>
+    <color name="actionErrorRetro">#bbffffff</color>
+    <color name="actionInfoRetro">#bbffffff</color>
+
+    <!--SHINE-->
+    <color name="successShine">#36CD84</color>
+    <color name="warningShine">#F7C858</color>
+    <color name="errorShine">#FF4E5C</color>
+    <color name="infoShine">#28DAC2</color>
+    <color name="actionSuccessShine">#1B8C70</color>
+    <color name="actionWarningShine">#FF7200</color>
+    <color name="actionErrorShine">#890916</color>
+    <color name="actionInfoShine">#235379</color>
+    <color name="searchDialogResultHighlightColor">#FFED2E47</color>
+    <color name="searchDialogResultColor">@android:color/secondary_text_light</color>
+    <color name="colorSwitchColor">#016dae</color>
+    <color name="colorSliderBackground">#000000</color>
+    <color name="colorTextColor">#016dae</color>
 </resources>
