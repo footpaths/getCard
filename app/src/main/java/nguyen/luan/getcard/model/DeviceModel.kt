@@ -12,24 +12,26 @@ class DeviceModel {
     var icon: String? = null
     var point: String? = null
     var status: String? = null
+    var idParams: String? = null
 
 
 
     constructor() {
 
     }
-    constructor(name: String, icon: String, point: String, status: String) {
+    constructor(name: String, icon: String, point: String, status: String,idParams: String) {
         this.name = name
         this.icon = icon
         this.point = point
         this.status = status
+        this.idParams = idParams
 
 
     }
 
 
     override fun toString(): String {
-        return "$name $icon $point $status"
+        return "$name $icon $point $status$idParams"
     }
     //fsdfsd
 }

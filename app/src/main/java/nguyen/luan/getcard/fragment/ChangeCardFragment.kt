@@ -16,10 +16,7 @@ import android.view.ViewGroup
  import androidx.recyclerview.widget.LinearLayoutManager
 
  import com.bumptech.glide.Glide
- import com.google.firebase.database.DataSnapshot
- import com.google.firebase.database.DatabaseError
- import com.google.firebase.database.FirebaseDatabase
- import com.google.firebase.database.ValueEventListener
+ import com.google.firebase.database.*
  import kotlinx.android.synthetic.main.fragment_user.*
  import nguyen.luan.getcard.R
  import nguyen.luan.getcard.R.id.*
@@ -27,7 +24,7 @@ import android.view.ViewGroup
  import nguyen.luan.getcard.Utils.ScreenPreference
  import nguyen.luan.getcard.adapter.ListAppAdapter
  import nguyen.luan.getcard.model.DeviceModel
- import java.util.ArrayList
+ import java.util.*
 
 
 /**
@@ -42,6 +39,7 @@ class ChangeCardFragment : Fragment(), View.OnClickListener, ChildEventListener 
      }
 
     override fun onChildChanged(p0: DataSnapshot, p1: String?) {
+
      }
 
     override fun onChildAdded(dataSnapshot: DataSnapshot, p1: String?) {
@@ -82,6 +80,9 @@ class ChangeCardFragment : Fragment(), View.OnClickListener, ChildEventListener 
             }
             dialog?.show()
         }
+
+
+        loadData()
     }
     private fun displayUsers(ls: List<DeviceModel>) {
 
@@ -89,13 +90,24 @@ class ChangeCardFragment : Fragment(), View.OnClickListener, ChildEventListener 
 
     }
     private fun loadData() {
+        listApp.clear()
         databaseReference = FirebaseDatabase.getInstance().reference
         rcvListApp.layoutManager = LinearLayoutManager(activity)
         myAdapter = ListAppAdapter(this!!.activity!!)
 
         rcvListApp.adapter = myAdapter
-        dbChild = databaseReference.child("User")
+        dbChild = databaseReference.child("User").child(ScreenPreference.instance.saveEmail).child(ScreenPreference.instance.saveDeviceID)
         dbChild.addChildEventListener(this)
+
+        myAdapter!!.setOnItemClickListener(object : ListAppAdapter.ClickListener {
+            override fun OnItemClick(position: Int, v: View) {
+
+            }
+
+            override fun OnItemClickUpdate() {
+                loadData()
+            }
+        })
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -136,9 +148,16 @@ class ChangeCardFragment : Fragment(), View.OnClickListener, ChildEventListener 
             val database = FirebaseDatabase.getInstance()
             val userInfo = database.getReference("User")
             val listApp = database.getReference("listApp")
-            var deviceParams = DeviceModel(nameApp, icon, "0", "1")
+            var alphabet = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ?/.,"
+            val character = (Math.random() * 26).toInt()
+            val uuid = UUID.randomUUID().toString()
+            val ids = alphabet.substring(character, character + 1)
+            var id = ids + uuid
+            println(id)
 
-            userInfo.child(emailParam).child(androidId).setValue(deviceParams)
+            var deviceParams = DeviceModel(nameApp, icon, "0", "1",id)
+
+            userInfo.child(emailParam).child(androidId).push().setValue(deviceParams)
             listApp.child(emailParam).setValue(deviceParams)
 
         }
