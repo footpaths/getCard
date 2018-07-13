@@ -57,7 +57,7 @@ class ScreenPreference (private val context: Context) {
 
 
 
-    var saveFirstName: String
+    var saveDeviceID: String
 
         get() = sharedPreferences.getString("url", "")
 

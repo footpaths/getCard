@@ -44,6 +44,7 @@ class LoginActivity : AppCompatActivity() {
         mAuth = FirebaseAuth.getInstance()
         instance = this
         androidId = Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID)
+        ScreenPreference.getInstance(this).saveDeviceID = androidId.toString()
         firebaseAuthListener = FirebaseAuth.AuthStateListener { firebaseAuth ->
             currentUser = mAuth!!.currentUser
             if (currentUser != null) {
