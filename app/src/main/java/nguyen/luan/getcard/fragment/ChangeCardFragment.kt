@@ -13,21 +13,47 @@ import android.view.ViewGroup
  import android.widget.EditText
  import android.widget.Toast
  import androidx.fragment.app.Fragment
+ import androidx.recyclerview.widget.LinearLayoutManager
 
  import com.bumptech.glide.Glide
- import com.google.firebase.database.FirebaseDatabase
+ import com.google.firebase.database.*
  import kotlinx.android.synthetic.main.fragment_user.*
  import nguyen.luan.getcard.R
  import nguyen.luan.getcard.Utils.GooglePlayScraper
  import nguyen.luan.getcard.Utils.ScreenPreference
+ import nguyen.luan.getcard.adapter.ListAppAdapter
  import nguyen.luan.getcard.model.DeviceModel
+ import java.util.ArrayList
 
 
 /**
  * Created by PC on 12/8/2017.
  */
-class ChangeCardFragment : Fragment(), View.OnClickListener {
+class ChangeCardFragment : Fragment(), View.OnClickListener, ChildEventListener {
+    override fun onCancelled(p0: DatabaseError) {
+
+    }
+
+    override fun onChildMoved(p0: DataSnapshot, p1: String?) {
+     }
+
+    override fun onChildChanged(p0: DataSnapshot, p1: String?) {
+     }
+
+    override fun onChildAdded(dataSnapshot: DataSnapshot, p1: String?) {
+        listApp.add(dataSnapshot!!.getValue(DeviceModel::class.java)!!)
+        displayUsers(listApp)
+     }
+
+    override fun onChildRemoved(p0: DataSnapshot) {
+     }
+
     var dialog:Dialog?=null
+    private val listApp = ArrayList<DeviceModel>()
+    private lateinit var databaseReference: DatabaseReference
+    private lateinit var dbChild: DatabaseReference
+
+    private var myAdapter: ListAppAdapter? = null
     override fun onClick(p0: View?) {
 
 
@@ -52,6 +78,23 @@ class ChangeCardFragment : Fragment(), View.OnClickListener {
             }
             dialog?.show()
         }
+
+
+        loadData()
+    }
+    private fun displayUsers(ls: List<DeviceModel>) {
+
+        myAdapter!!.setData(ls)
+
+    }
+    private fun loadData() {
+        databaseReference = FirebaseDatabase.getInstance().reference
+        rcvListApp.layoutManager = LinearLayoutManager(activity)
+        myAdapter = ListAppAdapter(this!!.activity!!)
+
+        rcvListApp.adapter = myAdapter
+        dbChild = databaseReference.child("User")
+        dbChild.addChildEventListener(this)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -95,6 +138,8 @@ class ChangeCardFragment : Fragment(), View.OnClickListener {
 
             myRef.child(emailParam).child(androidId).setValue(deviceParams)
         }
+
+
 
     }
 
