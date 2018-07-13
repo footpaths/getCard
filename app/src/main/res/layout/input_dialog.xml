@@ -23,9 +23,6 @@
                 android:gravity="center"
                 android:text="Thông tin ứng dụng của bạn"
                 android:textSize="20sp" />
-
-
-
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -58,27 +55,3 @@
 
 </LinearLayout>
 
-    <!--
-    <EditText
-    android:id="@+id/ten"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:hint="Tên" />
-
-    <EditText
-    android:id="@+id/tuoi"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:hint="Tuổi" />
-
-    <EditText
-    android:id="@+id/soTien"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:hint="Số tiền" />
-
-    <EditText
-    android:id="@+id/ghiChu"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:hint="ghi chú" />-->
