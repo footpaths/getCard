@@ -15,9 +15,13 @@ import android.view.ViewGroup
  import androidx.fragment.app.Fragment
 
  import com.bumptech.glide.Glide
+ import com.google.firebase.database.DataSnapshot
+ import com.google.firebase.database.DatabaseError
  import com.google.firebase.database.FirebaseDatabase
+ import com.google.firebase.database.ValueEventListener
  import kotlinx.android.synthetic.main.fragment_user.*
  import nguyen.luan.getcard.R
+ import nguyen.luan.getcard.R.id.*
  import nguyen.luan.getcard.Utils.GooglePlayScraper
  import nguyen.luan.getcard.Utils.ScreenPreference
  import nguyen.luan.getcard.model.DeviceModel
@@ -52,6 +56,17 @@ class ChangeCardFragment : Fragment(), View.OnClickListener {
             }
             dialog?.show()
         }
+/*        val database = FirebaseDatabase.getInstance().reference
+        database.addValueEventListener(object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {
+                System.out.println("The read failed: " + p0.message)
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+                System.out.println(p0.value)
+            }
+
+        })*/
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -90,10 +105,13 @@ class ChangeCardFragment : Fragment(), View.OnClickListener {
             var androidId =  ScreenPreference.instance.saveDeviceID
             var emailParam = ScreenPreference.instance.saveEmail
             val database = FirebaseDatabase.getInstance()
-            val myRef = database.getReference("User")
+            val userInfo = database.getReference("User")
+            val listApp = database.getReference("listApp")
             var deviceParams = DeviceModel(nameApp, icon, "0", "1")
 
-            myRef.child(emailParam).child(androidId).setValue(deviceParams)
+            userInfo.child(emailParam).child(androidId).setValue(deviceParams)
+            listApp.child(emailParam).setValue(deviceParams)
+
         }
 
     }
