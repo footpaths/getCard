@@ -118,11 +118,11 @@ class LoginActivity : AppCompatActivity() {
         var email = currentUser?.email
         var emailParam = email
         emailParam = emailParam!!.replace("[-\\[\\]^/,'*:.!><~#$%=?|\"\\\\()]".toRegex(), "")
-        val database = FirebaseDatabase.getInstance()
+      /*  val database = FirebaseDatabase.getInstance()
         val myRef = database.getReference("User")
         var deviceParams = DeviceModel("", "", "", "")
 
-        myRef.child(emailParam).child(androidId.toString()).setValue(deviceParams)
+        myRef.child(emailParam).child(androidId.toString()).setValue(deviceParams)*/
         ScreenPreference.getInstance(this).saveName = currentUser?.displayName!!
         ScreenPreference.getInstance(this).saveEmail = emailParam
         ScreenPreference.getInstance(this).saveAvatar = currentUser?.photoUrl.toString()

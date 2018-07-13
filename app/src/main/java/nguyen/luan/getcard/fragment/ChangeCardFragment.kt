@@ -16,9 +16,13 @@ import android.view.ViewGroup
  import androidx.recyclerview.widget.LinearLayoutManager
 
  import com.bumptech.glide.Glide
- import com.google.firebase.database.*
+ import com.google.firebase.database.DataSnapshot
+ import com.google.firebase.database.DatabaseError
+ import com.google.firebase.database.FirebaseDatabase
+ import com.google.firebase.database.ValueEventListener
  import kotlinx.android.synthetic.main.fragment_user.*
  import nguyen.luan.getcard.R
+ import nguyen.luan.getcard.R.id.*
  import nguyen.luan.getcard.Utils.GooglePlayScraper
  import nguyen.luan.getcard.Utils.ScreenPreference
  import nguyen.luan.getcard.adapter.ListAppAdapter
@@ -78,9 +82,6 @@ class ChangeCardFragment : Fragment(), View.OnClickListener, ChildEventListener 
             }
             dialog?.show()
         }
-
-
-        loadData()
     }
     private fun displayUsers(ls: List<DeviceModel>) {
 
@@ -133,10 +134,13 @@ class ChangeCardFragment : Fragment(), View.OnClickListener, ChildEventListener 
             var androidId =  ScreenPreference.instance.saveDeviceID
             var emailParam = ScreenPreference.instance.saveEmail
             val database = FirebaseDatabase.getInstance()
-            val myRef = database.getReference("User")
+            val userInfo = database.getReference("User")
+            val listApp = database.getReference("listApp")
             var deviceParams = DeviceModel(nameApp, icon, "0", "1")
 
-            myRef.child(emailParam).child(androidId).setValue(deviceParams)
+            userInfo.child(emailParam).child(androidId).setValue(deviceParams)
+            listApp.child(emailParam).setValue(deviceParams)
+
         }
 
 
