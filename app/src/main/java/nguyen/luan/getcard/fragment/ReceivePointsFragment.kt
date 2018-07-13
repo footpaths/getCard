@@ -17,7 +17,7 @@ class ReceivePointsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        //loadData()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -25,6 +25,9 @@ class ReceivePointsFragment : Fragment() {
 
         return view
     }
+
+
+
 
 
 
