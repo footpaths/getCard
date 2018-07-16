@@ -45,13 +45,13 @@ class ScreenPreference (private val context: Context) {
 
         }
 
-    var saveCounter: Int
+    var saveFirstApp: Boolean
 
-        get() = sharedPreferences.getInt("number_retry", 0)
+        get() = sharedPreferences.getBoolean("first", false)
 
         set(value) {
 
-            sharedPreferences.edit().putInt("number_retry", value).apply()
+            sharedPreferences.edit().putBoolean("first", value).apply()
 
         }
 

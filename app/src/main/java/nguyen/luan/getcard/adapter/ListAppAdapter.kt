@@ -29,7 +29,7 @@ class ListAppAdapter(private val mContext: Context) : RecyclerView.Adapter<ListA
 
     override fun onBindViewHolder(holder: MyHolder, position: Int) {
         holder.txtName?.text = listApp[position].name
-        holder.txtPoint?.text = "P: " + listApp[position].point
+        holder.txtPoint?.text = "P: "+listApp[position].point!!.toInt()
         Glide.with(mContext).load(listApp[position].icon)
                 .placeholder(R.drawable.holderimade)
                 .crossFade()
@@ -52,8 +52,9 @@ class ListAppAdapter(private val mContext: Context) : RecyclerView.Adapter<ListA
                     var btnSave = d.findViewById<View>(R.id.btnSave) as Button
                     btnSave.setOnClickListener {
                         val userTemps = dataSnapshot.getValue(DeviceModel::class.java)
-                        var point = edPoint.text.toString().toInt().toString()
-                        userTemps!!.point = point
+                        var point = edPoint.text.toString().toInt()
+                        var fpoint = String.format("%06d", point)
+                        userTemps!!.point = fpoint
                         userTemps!!.icon = listApp[position].icon
                         userTemps!!.name = listApp[position].name
                         userTemps!!.status = listApp[position].status
@@ -87,7 +88,7 @@ class ListAppAdapter(private val mContext: Context) : RecyclerView.Adapter<ListA
 
                                             } else {
                                                 Toast.makeText(mContext, "Cập nhật thành công!! ", Toast.LENGTH_LONG).show()
-                                                clickListener?.OnItemClickUpdate()
+//                                                clickListener?.OnItemClickUpdate()
                                             }
                                         }
                                 d.dismiss()
@@ -142,6 +143,7 @@ class ListAppAdapter(private val mContext: Context) : RecyclerView.Adapter<ListA
     fun setData(users: List<DeviceModel>) {
         listApp.clear()
         listApp.addAll(users)
+        listApp.reverse()
         notifyDataSetChanged()
 
     }
