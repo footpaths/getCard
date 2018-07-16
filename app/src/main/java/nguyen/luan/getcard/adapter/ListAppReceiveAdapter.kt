@@ -1,44 +1,39 @@
 package nguyen.luan.getcard.adapter
 
-import android.app.Activity
-import android.app.Dialog
-import android.content.Context
-import android.os.Bundle
-import android.os.Parcelable
+ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
+ import com.bumptech.glide.Glide
 
-import com.bumptech.glide.Glide
-import com.google.firebase.database.*
+ import com.google.firebase.database.*
 import nguyen.luan.getcard.R
-import nguyen.luan.getcard.Utils.ScreenPreference
-import nguyen.luan.getcard.model.DeviceModel
-import java.text.SimpleDateFormat
-import java.util.*
+ import nguyen.luan.getcard.model.DeviceModel
+ import kotlin.collections.ArrayList
 
 /**
  * Created by PC on 12/12/2017.
  */
-class ListAppAdapter(private val mContext: Context) : RecyclerView.Adapter<ListAppAdapter.MyHolder>() {
+class ListAppReceiveAdapter(private val mContext: Context) : RecyclerView.Adapter<ListAppReceiveAdapter.MyHolder>() {
 
     private var listApp = ArrayList<DeviceModel>()
     internal var databaseReference = FirebaseDatabase.getInstance().reference
 
     override fun onBindViewHolder(holder: MyHolder, position: Int) {
         holder.txtName?.text = listApp[position].name
-        holder.txtPoint?.text = "P: " + listApp[position].point
+        holder.txtPoint?.text = "Point: " + listApp[position].point
         Glide.with(mContext).load(listApp[position].icon)
                 .placeholder(R.drawable.holderimade)
                 .crossFade()
                 .into(holder?.imgIcon)
-        holder.btnEdit.setOnClickListener {
+        
+    /*    holder.btnEdit.setOnClickListener {
             databaseReference.child("User").child(ScreenPreference.instance.saveEmail).child(ScreenPreference.instance.saveDeviceID).addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     val d = Dialog(mContext)
-                    d.setContentView(R.layout.input_dialog_point)
+                    d.setContentView(R.layout.cell_fragment_user_install)
                     var edPoint: EditText
 
 
@@ -106,12 +101,12 @@ class ListAppAdapter(private val mContext: Context) : RecyclerView.Adapter<ListA
 
                 }
             })
-        }
+        }*/
 
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyHolder {
-        val v = LayoutInflater.from(parent.context).inflate(R.layout.cell_fragment_user, parent, false)
+        val v = LayoutInflater.from(parent.context).inflate(R.layout.cell_fragment_user_install, parent, false)
         return MyHolder(v)
 
 
@@ -139,7 +134,7 @@ class ListAppAdapter(private val mContext: Context) : RecyclerView.Adapter<ListA
         return listApp.size
     }
 
-    fun setData(users: List<DeviceModel>) {
+    fun setData(users: ArrayList<DeviceModel>) {
         listApp.clear()
         listApp.addAll(users)
         notifyDataSetChanged()
@@ -154,7 +149,7 @@ class ListAppAdapter(private val mContext: Context) : RecyclerView.Adapter<ListA
         var imgIcon: ImageView = itemView.findViewById(R.id.imgIcon)
         var txtName: TextView = itemView.findViewById(R.id.txtName)
         var txtPoint: TextView = itemView.findViewById(R.id.txtPoint)
-        var btnEdit: Button = itemView.findViewById(R.id.btnEdit)
+        var btnInstall: Button = itemView.findViewById(R.id.btnInstall)
 
         //        var txtContent : TextView = itemView.findViewById(R.id.txtContent)
 //        var txtDate : TextView = itemView.findViewById(R.id.txtDate)
@@ -165,8 +160,8 @@ class ListAppAdapter(private val mContext: Context) : RecyclerView.Adapter<ListA
         }
     }
 
-    fun setOnItemClickListener(clickListener: ListAppAdapter.ClickListener) {
-        ListAppAdapter.clickListener = clickListener
+    fun setOnItemClickListener(clickListener: ListAppReceiveAdapter.ClickListener) {
+        ListAppReceiveAdapter.clickListener = clickListener
     }
 
     interface ClickListener {
