@@ -5,6 +5,7 @@ package nguyen.luan.getcard.fragment
  import android.app.ProgressDialog
  import android.os.Bundle
  import android.provider.Settings
+ import android.util.Log
 
  import android.view.LayoutInflater
 import android.view.View
@@ -25,6 +26,9 @@ import android.view.ViewGroup
  import nguyen.luan.getcard.adapter.ListAppAdapter
  import nguyen.luan.getcard.model.DeviceModel
  import java.util.*
+import com.google.firebase.database.DataSnapshot
+
+
 
 
 /**
@@ -54,8 +58,8 @@ class ChangeCardFragment : Fragment(), View.OnClickListener, ChildEventListener 
     private val listApp = ArrayList<DeviceModel>()
     private lateinit var databaseReference: DatabaseReference
     private lateinit var dbChild: DatabaseReference
-
     private var myAdapter: ListAppAdapter? = null
+    private var firstApp: Boolean? = false
     override fun onClick(p0: View?) {
 
 
@@ -96,8 +100,11 @@ class ChangeCardFragment : Fragment(), View.OnClickListener, ChildEventListener 
         myAdapter = ListAppAdapter(this!!.activity!!)
 
         rcvListApp.adapter = myAdapter
+        var dbQuery:Query?=null
         dbChild = databaseReference.child("User").child(ScreenPreference.instance.saveEmail).child(ScreenPreference.instance.saveDeviceID)
-        dbChild.addChildEventListener(this)
+        dbQuery = dbChild.orderByChild("point").limitToLast(10)
+        dbQuery.addChildEventListener(this)
+
 
         myAdapter!!.setOnItemClickListener(object : ListAppAdapter.ClickListener {
             override fun OnItemClick(position: Int, v: View) {
