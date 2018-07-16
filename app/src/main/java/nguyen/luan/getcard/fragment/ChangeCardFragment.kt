@@ -158,7 +158,7 @@ class ChangeCardFragment : Fragment(), View.OnClickListener, ChildEventListener 
             var deviceParams = DeviceModel(nameApp, icon, "0", "1",id)
 
             userInfo.child(emailParam).child(androidId).child(nameApp).setValue(deviceParams)
-            listApp.child(emailParam).child(nameApp).setValue(deviceParams)
+            listApp.child("$nameApp-$androidId").setValue(deviceParams)
 
         }
 

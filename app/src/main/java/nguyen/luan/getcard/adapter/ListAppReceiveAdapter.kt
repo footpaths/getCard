@@ -23,12 +23,12 @@ class ListAppReceiveAdapter(private val mContext: Context) : RecyclerView.Adapte
 
     override fun onBindViewHolder(holder: MyHolder, position: Int) {
         holder.txtName?.text = listApp[position].name
-        holder.txtPoint?.text = "Point: " + listApp[position].point
+        holder.txtPoint?.text = "P: " + listApp[position].point
         Glide.with(mContext).load(listApp[position].icon)
                 .placeholder(R.drawable.holderimade)
                 .crossFade()
                 .into(holder?.imgIcon)
-        
+
     /*    holder.btnEdit.setOnClickListener {
             databaseReference.child("User").child(ScreenPreference.instance.saveEmail).child(ScreenPreference.instance.saveDeviceID).addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {

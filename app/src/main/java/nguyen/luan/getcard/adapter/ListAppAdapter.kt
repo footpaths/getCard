@@ -78,8 +78,8 @@ class ListAppAdapter(private val mContext: Context) : RecyclerView.Adapter<ListA
                                         }
 
                                 databaseReference.child("listApp")
-                                        .child(ScreenPreference.instance.saveEmail)
-                                         .child(snapshot.key.toString())
+
+                                         .child(snapshot.key.toString()+ "-"+ ScreenPreference.instance.saveDeviceID)
                                         .setValue(userTemps) { databaseError, databaseReference ->
                                             if (databaseError != null) {
                                                 Toast.makeText(mContext, "Cập nhật Error!!", Toast.LENGTH_LONG).show()

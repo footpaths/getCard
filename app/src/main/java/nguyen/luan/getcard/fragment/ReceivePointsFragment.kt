@@ -22,9 +22,11 @@ import android.widget.Toast
 import nguyen.luan.getcard.MainActivity
 import com.google.firebase.database.GenericTypeIndicator
 import android.content.ClipData.Item
+import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
+import nguyen.luan.getcard.adapter.EndlessRecyclerViewScrollListener
 
 
 /**
@@ -39,10 +41,23 @@ class ReceivePointsFragment : Fragment() {
     private lateinit var databaseReference: DatabaseReference
     private lateinit var dbChild: DatabaseReference
     private var myAdapter: ListAppReceiveAdapter? = null
-
+    var dataBaseQuery:Query ?=null
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        loadData()
+        val linearLayoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+        rcvListAppReceive.layoutManager = linearLayoutManager
+
+         loadData()
+        rcvListAppReceive?.addOnScrollListener(object : EndlessRecyclerViewScrollListener(linearLayoutManager) {
+            /*  override fun onLoadMore(page: Int, totalItemsCount: Int) {
+                //callService(totalItemsCount.toString())
+            }*/
+
+
+            override fun onLoadMore(page: Int, totalItemsCount: Int) {
+ 
+             }
+        })
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -65,26 +80,28 @@ class ReceivePointsFragment : Fragment() {
 
         rcvListAppReceive.adapter = myAdapter
         dbChild = databaseReference.child("listApp")
-
-        dbChild.addValueEventListener(object : ValueEventListener {
+        dataBaseQuery = dbChild.orderByChild("point").limitToLast(10)
+        dataBaseQuery!!.addValueEventListener(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {
 
             }
 
             override fun onDataChange(snapshot: DataSnapshot) {
                 for (child in snapshot.children) {
-                    for (children in child.children) {
-                        listDevice.add(children.getValue(DeviceModel::class.java)!!)
+
+                        listDevice.add(child.getValue(DeviceModel::class.java)!!)
+
                         println(listDevice)
-                        displayUsers(listDevice)
-                    }
+
+
 //                    var device: DeviceModel = child.getValue(DeviceModel::class.java)!!
 //                    listDevice.add(device)
 //                     listDevice.add(child.getValue(DeviceModel::class.java)!!)
 //                    println(listDevice)
 //                    displayUsers(listDevice)
                 }
-
+                listDevice.reverse()
+                displayUsers(listDevice)
             }
         })
 
