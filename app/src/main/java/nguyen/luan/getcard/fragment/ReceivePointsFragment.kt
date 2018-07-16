@@ -55,7 +55,7 @@ class ReceivePointsFragment : Fragment() {
 
 
             override fun onLoadMore(page: Int, totalItemsCount: Int) {
- 
+
              }
         })
     }
@@ -80,7 +80,7 @@ class ReceivePointsFragment : Fragment() {
 
         rcvListAppReceive.adapter = myAdapter
         dbChild = databaseReference.child("listApp")
-        dataBaseQuery = dbChild.orderByChild("point").limitToLast(10)
+        dataBaseQuery = dbChild.orderByChild("point").limitToLast(20)
         dataBaseQuery!!.addValueEventListener(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {
 

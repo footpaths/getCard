@@ -23,7 +23,7 @@ class ListAppReceiveAdapter(private val mContext: Context) : RecyclerView.Adapte
 
     override fun onBindViewHolder(holder: MyHolder, position: Int) {
         holder.txtName?.text = listApp[position].name
-        holder.txtPoint?.text = "P: " + listApp[position].point
+        holder.txtPoint?.text = "P: " + listApp[position].point?.toInt()
         Glide.with(mContext).load(listApp[position].icon)
                 .placeholder(R.drawable.holderimade)
                 .crossFade()
