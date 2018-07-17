@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide
 import com.google.firebase.database.*
 import nguyen.luan.getcard.R
 import nguyen.luan.getcard.Utils.ScreenPreference
+import nguyen.luan.getcard.fragment.ChangeCardFragment
 import nguyen.luan.getcard.model.DeviceModel
 import java.text.SimpleDateFormat
 import java.util.*
@@ -22,9 +23,9 @@ import java.util.*
 /**
  * Created by PC on 12/12/2017.
  */
-class ListAppAdapter(private val mContext: Context) : RecyclerView.Adapter<ListAppAdapter.MyHolder>() {
+class ListAppAdapter(private val mContext: Context, var listApp: ArrayList<DeviceModel>) : RecyclerView.Adapter<ListAppAdapter.MyHolder>() {
 
-    private var listApp = ArrayList<DeviceModel>()
+//    private var listApp = ArrayList<DeviceModel>()
     internal var databaseReference = FirebaseDatabase.getInstance().reference
 
     override fun onBindViewHolder(holder: MyHolder, position: Int) {
@@ -48,7 +49,7 @@ class ListAppAdapter(private val mContext: Context) : RecyclerView.Adapter<ListA
 
                     edPoint.setText(listApp[position].point!!.toInt().toString())
                     var afterPoint = 0
-                    var totalPoint = ScreenPreference.instance.saveTotalPoint + edPoint.text.toString().toInt()
+                    var totalPoint = ChangeCardFragment.instance.point + edPoint.text.toString().toInt()
 
 
                     var btnSave = d.findViewById<View>(R.id.btnSave) as Button
@@ -62,6 +63,7 @@ class ListAppAdapter(private val mContext: Context) : RecyclerView.Adapter<ListA
                             userTemps!!.icon = listApp[position].icon
                             userTemps!!.name = listApp[position].name
                             userTemps!!.status = listApp[position].status
+                            userTemps!!.packageParams = listApp[position].packageParams
                             userTemps!!.idParams = listApp[position].idParams
                             for (snapshot in dataSnapshot.children) {
                                 val userTemp = snapshot.getValue(DeviceModel::class.java)
@@ -80,7 +82,6 @@ class ListAppAdapter(private val mContext: Context) : RecyclerView.Adapter<ListA
                                                     Toast.makeText(mContext, "Cập nhật thành công!! ", Toast.LENGTH_LONG).show()
                                                     clickListener?.OnItemClickUpdate()
                                                     afterPoint = totalPoint - point
-                                                    ScreenPreference.instance.saveTotalPoint = afterPoint
                                                     val database = FirebaseDatabase.getInstance()
                                                     val userInfo = database.getReference("User")
                                                     userInfo.child(ScreenPreference.instance.saveEmail).child("userPoint").setValue(afterPoint.toString())

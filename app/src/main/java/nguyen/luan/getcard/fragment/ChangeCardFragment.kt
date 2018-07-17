@@ -3,6 +3,7 @@ package nguyen.luan.getcard.fragment
  import android.app.Dialog
  import android.os.AsyncTask
  import android.app.ProgressDialog
+ import android.graphics.PorterDuff
  import android.os.Bundle
  import android.provider.Settings
  import android.util.Log
@@ -34,25 +35,7 @@ import com.google.firebase.database.DataSnapshot
 /**
  * Created by PC on 12/8/2017.
  */
-class ChangeCardFragment : Fragment(), View.OnClickListener, ChildEventListener {
-    override fun onCancelled(p0: DatabaseError) {
-
-    }
-
-    override fun onChildMoved(p0: DataSnapshot, p1: String?) {
-     }
-
-    override fun onChildChanged(p0: DataSnapshot, p1: String?) {
-
-     }
-
-    override fun onChildAdded(dataSnapshot: DataSnapshot, p1: String?) {
-        listApp.add(dataSnapshot!!.getValue(DeviceModel::class.java)!!)
-        displayUsers(listApp)
-     }
-
-    override fun onChildRemoved(p0: DataSnapshot) {
-     }
+class ChangeCardFragment : Fragment() {
 
     var dialog:Dialog?=null
     private val listApp = ArrayList<DeviceModel>()
@@ -60,15 +43,10 @@ class ChangeCardFragment : Fragment(), View.OnClickListener, ChildEventListener 
     private lateinit var dbChild: DatabaseReference
     private lateinit var dbChildPoint: DatabaseReference
     private var myAdapter: ListAppAdapter? = null
-    private var firstApp: Boolean? = false
-    private var nameAppPackage: String? = null
+     var nameAppPackage: String? = null
 
-    private var point = 0
-    override fun onClick(p0: View?) {
+     var point = 0
 
-
-
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -80,26 +58,24 @@ class ChangeCardFragment : Fragment(), View.OnClickListener, ChildEventListener 
             val database = FirebaseDatabase.getInstance()
             val userInfo = database.getReference("User")
             userInfo.child(ScreenPreference.instance.saveEmail).child("userPoint").setValue("0")
-            ScreenPreference.instance.saveTotalPoint= 0
             ScreenPreference.instance.saveFirstApp=true
 
         }else{
             databaseReference = FirebaseDatabase.getInstance().reference
-            dbChildPoint = databaseReference.child("User").child(ScreenPreference.instance.saveEmail)
+            dbChildPoint = databaseReference.child("User").child(ScreenPreference.instance.saveEmail).child("userPoint")
             dbChildPoint.addValueEventListener(object : ValueEventListener {
                 override fun onCancelled(p0: DatabaseError) {
                 }
 
                 override fun onDataChange(p0: DataSnapshot) {
-                    point = p0.child("userPoint").value.toString().toInt()
-                    ScreenPreference.instance.saveTotalPoint= point
+                    point = p0.value.toString().toInt()
                     tvPoint.text = point.toString()
                 }
             })
         }
 
         btnAdd.setOnClickListener {
-//            ScrapePlayStoreTask().execute("biz.gina.southernbreezetour")
+
             dialog = Dialog(activity)
             dialog?.setContentView(R.layout.input_dialog)
             var name = dialog?.findViewById<View>(R.id.nameApp) as EditText
@@ -122,15 +98,29 @@ class ChangeCardFragment : Fragment(), View.OnClickListener, ChildEventListener 
     }
     private fun loadData() {
         listApp.clear()
-        databaseReference = FirebaseDatabase.getInstance().reference
-        rcvListApp.layoutManager = LinearLayoutManager(activity)
-        myAdapter = ListAppAdapter(this!!.activity!!)
-
-        rcvListApp.adapter = myAdapter
         var dbQuery:Query?=null
+        databaseReference = FirebaseDatabase.getInstance().reference
         dbChild = databaseReference.child("User").child(ScreenPreference.instance.saveEmail).child(ScreenPreference.instance.saveDeviceID)
         dbQuery = dbChild.orderByChild("point").limitToLast(10)
-        dbQuery.addChildEventListener(this)
+        dbQuery.addValueEventListener(object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+                listApp.clear()
+                for (child in p0.children) {
+                    listApp.add(child.getValue(DeviceModel::class.java)!!)
+                }
+                listApp.reverse()
+                myAdapter!!.notifyDataSetChanged()
+            }
+        })
+
+        rcvListApp.layoutManager = LinearLayoutManager(activity)
+        myAdapter = ListAppAdapter(this!!.activity!!, listApp)
+
+        rcvListApp.adapter = myAdapter
+        myAdapter!!.notifyDataSetChanged()
 
 
         myAdapter!!.setOnItemClickListener(object : ListAppAdapter.ClickListener {
@@ -146,7 +136,7 @@ class ChangeCardFragment : Fragment(), View.OnClickListener, ChildEventListener 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         var view = inflater?.inflate(R.layout.fragment_user, container, false)
-
+            instance = this
         return view
     }
 
@@ -202,6 +192,9 @@ class ChangeCardFragment : Fragment(), View.OnClickListener, ChildEventListener 
 
 
     }
-
+    companion object {
+        lateinit var instance: ChangeCardFragment
+            private set
+    }
 
 }
