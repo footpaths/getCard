@@ -45,55 +45,68 @@ class ListAppAdapter(private val mContext: Context) : RecyclerView.Adapter<ListA
                     edPoint = d.findViewById<View>(R.id.edPoint) as EditText
 
 
-                    edPoint.setText(listApp[position].point)
 
+                    edPoint.setText(listApp[position].point!!.toInt().toString())
+                    var afterPoint = 0
+                    var totalPoint = ScreenPreference.instance.saveTotalPoint + edPoint.text.toString().toInt()
 
 
                     var btnSave = d.findViewById<View>(R.id.btnSave) as Button
                     btnSave.setOnClickListener {
                         val userTemps = dataSnapshot.getValue(DeviceModel::class.java)
-                        var point = edPoint.text.toString().toInt()
-                        var fpoint = String.format("%06d", point)
-                        userTemps!!.point = fpoint
-                        userTemps!!.icon = listApp[position].icon
-                        userTemps!!.name = listApp[position].name
-                        userTemps!!.status = listApp[position].status
-                        userTemps!!.idParams = listApp[position].idParams
-                        for (snapshot in dataSnapshot.children) {
-                            val userTemp = snapshot.getValue(DeviceModel::class.java)
-                            if (listApp[position].idParams == userTemp?.idParams) {
 
-                                databaseReference.child("User")
-                                        .child(ScreenPreference.instance.saveEmail)
-                                        .child(ScreenPreference.instance.saveDeviceID)
-                                        .child(snapshot.key.toString())
-                                        .setValue(userTemps) { databaseError, databaseReference ->
-                                            if (databaseError != null) {
-                                                Toast.makeText(mContext, "Cập nhật Error!!", Toast.LENGTH_LONG).show()
+                        if (edPoint.text.toString().toInt() in 1..totalPoint ) {
+                            var point = edPoint.text.toString().toInt()
+                            var fpoint = String.format("%06d", point)
+                            userTemps!!.point = fpoint
+                            userTemps!!.icon = listApp[position].icon
+                            userTemps!!.name = listApp[position].name
+                            userTemps!!.status = listApp[position].status
+                            userTemps!!.idParams = listApp[position].idParams
+                            for (snapshot in dataSnapshot.children) {
+                                val userTemp = snapshot.getValue(DeviceModel::class.java)
+                                if (listApp[position].idParams == userTemp?.idParams) {
+
+                                    databaseReference.child("User")
+                                            .child(ScreenPreference.instance.saveEmail)
+                                            .child(ScreenPreference.instance.saveDeviceID)
+                                            .child(snapshot.key.toString())
+                                            .setValue(userTemps) { databaseError, databaseReference ->
+                                                if (databaseError != null) {
+                                                    Toast.makeText(mContext, "Cập nhật Error!!", Toast.LENGTH_LONG).show()
 
 
-                                            } else {
-                                                Toast.makeText(mContext, "Cập nhật thành công!! ", Toast.LENGTH_LONG).show()
-                                                clickListener?.OnItemClickUpdate()
+                                                } else {
+                                                    Toast.makeText(mContext, "Cập nhật thành công!! ", Toast.LENGTH_LONG).show()
+                                                    clickListener?.OnItemClickUpdate()
+                                                    afterPoint = totalPoint - point
+                                                    ScreenPreference.instance.saveTotalPoint = afterPoint
+                                                    val database = FirebaseDatabase.getInstance()
+                                                    val userInfo = database.getReference("User")
+                                                    userInfo.child(ScreenPreference.instance.saveEmail).child("userPoint").setValue(afterPoint.toString())
+                                                }
                                             }
-                                        }
 
-                                databaseReference.child("listApp")
+                                    databaseReference.child("listApp")
 
-                                         .child(snapshot.key.toString()+ "-"+ ScreenPreference.instance.saveDeviceID)
-                                        .setValue(userTemps) { databaseError, databaseReference ->
-                                            if (databaseError != null) {
-                                                Toast.makeText(mContext, "Cập nhật Error!!", Toast.LENGTH_LONG).show()
+                                            .child(snapshot.key.toString() + "-" + ScreenPreference.instance.saveDeviceID)
+                                            .setValue(userTemps) { databaseError, databaseReference ->
+                                                if (databaseError != null) {
+                                                    Toast.makeText(mContext, "Cập nhật Error!!", Toast.LENGTH_LONG).show()
 
 
-                                            } else {
-                                                Toast.makeText(mContext, "Cập nhật thành công!! ", Toast.LENGTH_LONG).show()
+                                                } else {
+                                                    Toast.makeText(mContext, "Cập nhật thành công!! ", Toast.LENGTH_LONG).show()
 //                                                clickListener?.OnItemClickUpdate()
+                                                }
                                             }
-                                        }
-                                d.dismiss()
+                                    d.dismiss()
 
+                                }
                             }
+                        }else{
+                            d.dismiss()
+                            Toast.makeText(mContext, "point phải nhỏ hơn $totalPoint ", Toast.LENGTH_LONG).show()
                         }
                     }
 

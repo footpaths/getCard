@@ -58,10 +58,12 @@ class ChangeCardFragment : Fragment(), View.OnClickListener, ChildEventListener 
     private val listApp = ArrayList<DeviceModel>()
     private lateinit var databaseReference: DatabaseReference
     private lateinit var dbChild: DatabaseReference
+    private lateinit var dbChildPoint: DatabaseReference
     private var myAdapter: ListAppAdapter? = null
     private var firstApp: Boolean? = false
     private var nameAppPackage: String? = null
 
+    private var point = 0
     override fun onClick(p0: View?) {
 
 
@@ -73,6 +75,28 @@ class ChangeCardFragment : Fragment(), View.OnClickListener, ChildEventListener 
         var url = ScreenPreference.instance.saveAvatar +"?type=large"
         Glide.with(activity).load(url).error(R.drawable.ic_launcher_background).into(imageView)
         user_name.text = ScreenPreference.instance.saveName
+        var firstApp =  ScreenPreference.instance.saveFirstApp
+        if(!firstApp){
+            val database = FirebaseDatabase.getInstance()
+            val userInfo = database.getReference("User")
+            userInfo.child(ScreenPreference.instance.saveEmail).child("userPoint").setValue("0")
+            ScreenPreference.instance.saveTotalPoint= 0
+            ScreenPreference.instance.saveFirstApp=true
+
+        }else{
+            databaseReference = FirebaseDatabase.getInstance().reference
+            dbChildPoint = databaseReference.child("User").child(ScreenPreference.instance.saveEmail)
+            dbChildPoint.addValueEventListener(object : ValueEventListener {
+                override fun onCancelled(p0: DatabaseError) {
+                }
+
+                override fun onDataChange(p0: DataSnapshot) {
+                    point = p0.child("userPoint").value.toString().toInt()
+                    ScreenPreference.instance.saveTotalPoint= point
+                    tvPoint.text = point.toString()
+                }
+            })
+        }
         btnAdd.setOnClickListener {
 //            ScrapePlayStoreTask().execute("biz.gina.southernbreezetour")
             dialog = Dialog(activity)

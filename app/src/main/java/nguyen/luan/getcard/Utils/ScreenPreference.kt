@@ -107,13 +107,13 @@ class ScreenPreference (private val context: Context) {
 
         }
 
-    var saveTotalPrice: String
+    var saveTotalPoint: Int
 
-        get() = sharedPreferences.getString("price", "")
+        get() = sharedPreferences.getInt("price", 0)
 
         set(value) {
 
-            sharedPreferences.edit().putString("price", value).apply()
+            sharedPreferences.edit().putInt("price", value).apply()
 
         }
 
