@@ -60,6 +60,8 @@ class ChangeCardFragment : Fragment(), View.OnClickListener, ChildEventListener 
     private lateinit var dbChild: DatabaseReference
     private var myAdapter: ListAppAdapter? = null
     private var firstApp: Boolean? = false
+    private var nameAppPackage: String? = null
+
     override fun onClick(p0: View?) {
 
 
@@ -78,8 +80,8 @@ class ChangeCardFragment : Fragment(), View.OnClickListener, ChildEventListener 
             var name = dialog?.findViewById<View>(R.id.nameApp) as EditText
             var btnSave = dialog?.findViewById<View>(R.id.btnSave) as Button
             btnSave.setOnClickListener{
-                var nameApp = name.text
-                ScrapePlayStoreTask().execute(nameApp.toString())
+                  nameAppPackage = name.text.toString()
+                ScrapePlayStoreTask().execute(nameAppPackage.toString())
                 dialog?.dismiss()
             }
             dialog?.show()
@@ -162,9 +164,12 @@ class ChangeCardFragment : Fragment(), View.OnClickListener, ChildEventListener 
             var id = ids + uuid
             println(id)
 
-            var deviceParams = DeviceModel(nameApp, icon, "0", "1",id)
+            var deviceParams = DeviceModel(nameApp, icon, "0", "1",id,nameAppPackage.toString())
 
             userInfo.child(emailParam).child(androidId).child(nameApp).setValue(deviceParams)
+            userInfo.child(emailParam).child("Pkg -$androidId").child(nameApp).setValue(nameAppPackage)
+            userInfo.child(emailParam).child("listPkgApp -$androidId").child(nameApp).setValue(nameAppPackage)
+
             listApp.child("$nameApp-$androidId").setValue(deviceParams)
 
         }

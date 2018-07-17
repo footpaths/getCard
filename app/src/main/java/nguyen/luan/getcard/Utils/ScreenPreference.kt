@@ -66,7 +66,15 @@ class ScreenPreference (private val context: Context) {
             sharedPreferences.edit().putString("url", value).apply()
 
         }
+    var saveAppName: String
 
+        get() = sharedPreferences.getString("appName", "")
+
+        set(value) {
+
+            sharedPreferences.edit().putString("appName", value).apply()
+
+        }
 
 
     var saveName: String

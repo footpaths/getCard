@@ -23,6 +23,7 @@ import com.facebook.AccessToken
 import com.facebook.login.LoginManager
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
+import com.google.firebase.database.FirebaseDatabase
 import nguyen.luan.getcard.Utils.MoveScreen
 import nguyen.luan.getcard.Utils.ScreenPreference
 import nguyen.luan.getcard.fragment.ChangeCardFragment
@@ -54,7 +55,6 @@ class MainActivity : AppCompatActivity() {
         false
     }
     private var moveScreen: MoveScreen? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -62,58 +62,12 @@ class MainActivity : AppCompatActivity() {
         moveScreen!!.firstMoveFragment(R.id.content, ReceivePointsFragment())
 
 
+
       navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
-//
-//        val isAppInstalled = appInstalledOrNot("biz.gina.southernbreezetour")
-//
-//        if (isAppInstalled) {
-//            //This intent will help you to launch if the package is already installed
-//            val LaunchIntent = packageManager
-//                    .getLaunchIntentForPackage("biz.gina.southernbreezetour")
-//            startActivity(LaunchIntent)
-//
-//            Log.i("kq","Application is already installed.")
-//        } else {
-//            // Do whatever we want to do if application not installed
-//            // For example, Redirect to play store
-//
-//            Log.i("kq","Application is not currently installed.")
-//        }
-
-        /**
-         *  todo genderate key hash
-         */
-        /*  try {
-              val info = this.packageManager.getPackageInfo(
-                      "nguyen.luan.getcard",
-                      PackageManager.GET_SIGNATURES)
-              for (signature in info.signatures) {
-                  val md = MessageDigest.getInstance("SHA")
-                  md.update(signature.toByteArray())
-                  Log.d("KeyHash", "KeyHash:" + Base64.encodeToString(md.digest(),
-                          Base64.DEFAULT))
-                  //Toast.makeText(this.applicationContext, Base64.encodeToString(md.digest(), Base64.DEFAULT), Toast.LENGTH_LONG).show()
-              }
-          } catch (e: PackageManager.NameNotFoundException) {
-
-          } catch (e: NoSuchAlgorithmException) {
-
-          }*/
 
 
     }
 
-//
-//    private fun appInstalledOrNot(uri: String): Boolean {
-//        val pm = packageManager
-//        try {
-//            pm.getPackageInfo(uri, PackageManager.GET_ACTIVITIES)
-//            return true
-//        } catch (e: PackageManager.NameNotFoundException) {
-//        }
-//
-//        return false
-//    }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
