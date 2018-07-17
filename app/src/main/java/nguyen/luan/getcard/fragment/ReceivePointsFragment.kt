@@ -26,6 +26,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
+import nguyen.luan.getcard.LoginActivity
 import nguyen.luan.getcard.adapter.EndlessRecyclerViewScrollListener
 import java.util.*
 
@@ -33,31 +34,11 @@ import java.util.*
 /**
  * Created by PC on 12/8/2017.
  */
-class ReceivePointsFragment : Fragment(), ValueEventListener {
-    override fun onCancelled(p0: DatabaseError) {
-
-    }
-
-    override fun onDataChange(snapshot: DataSnapshot) {
-        for (child in snapshot.children) {
-            listPkgInstall.add(child.value.toString())
-            //  listDevice.add(child.getValue(DeviceModel::class.java)!!)
-
-            println(listPkgInstall)
+class ReceivePointsFragment : Fragment() {
 
 
-//                    var device: DeviceModel = child.getValue(DeviceModel::class.java)!!
-//                    listDevice.add(device)
-//                     listDevice.add(child.getValue(DeviceModel::class.java)!!)
-//                    println(listDevice)
-//                    displayUsers(listDevice)
-        }
-    }
 
-
-    private val listApp = ArrayList<Emails>()
-    private val listDevice = ArrayList<DeviceModel>()
-    private val listDeviceShow = ArrayList<DeviceModel>()
+     private val listDevice = ArrayList<DeviceModel>()
 
     private lateinit var databaseReference: DatabaseReference
     private lateinit var dbChild: DatabaseReference
@@ -75,7 +56,7 @@ class ReceivePointsFragment : Fragment(), ValueEventListener {
         val mainIntent = Intent(Intent.ACTION_MAIN, null)
         mainIntent.addCategory(Intent.CATEGORY_LAUNCHER)
         val pkgAppsList = activity!!.packageManager.queryIntentActivities(mainIntent, 0)
-
+        instance = this
 
         //var dialog = DialogLoading
         for (i in 0 until pkgAppsList.size) {
@@ -116,60 +97,47 @@ class ReceivePointsFragment : Fragment(), ValueEventListener {
         return view
     }
 
-    private fun displayUsers(ls: ArrayList<DeviceModel>) {
 
-
-        myAdapter!!.setData(ls)
-
-    }
 
     private fun loadData() {
-        listApp.clear()
+        listDevice.clear()
         databaseReference = FirebaseDatabase.getInstance().reference
         var androidId = ScreenPreference.instance.saveDeviceID
         dbChild = databaseReference.child("User").child(ScreenPreference.instance.saveEmail).child("Pkg -$androidId")
-        dbChild.addValueEventListener(this)
+        dbChild.addValueEventListener(object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+                for (child in p0.children) {
+                    listPkgInstall.add(child.value.toString())
+
+                }
+
+            }
+        })
 
 
         rcvListAppReceive.layoutManager = LinearLayoutManager(activity)
-        myAdapter = ListAppReceiveAdapter(this!!.activity!!)
+        myAdapter = ListAppReceiveAdapter(this!!.activity!!,listDevice)
 
         rcvListAppReceive.adapter = myAdapter
-        dbChild = databaseReference.child("listApp")
-        dataBaseQuery = dbChild.orderByChild("point").limitToLast(20)
+//        dbChild = databaseReference.child("listApp")
+        dataBaseQuery =  databaseReference.child("listApp").orderByChild("point").limitToLast(20)
         dataBaseQuery!!.addValueEventListener(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {
 
             }
 
             override fun onDataChange(snapshot: DataSnapshot) {
-                 for (child in snapshot.children) {
+                listDevice.clear()
+                for (child in snapshot.children) {
+                     listDevice.add(child.getValue(DeviceModel::class.java)!!)
 
-
-                    listDevice.add(child.getValue(DeviceModel::class.java)!!)
-
-                    println(listDevice)
-
-//                    var device: DeviceModel = child.getValue(DeviceModel::class.java)!!
-//                    listDevice.add(device)
-//                     listDevice.add(child.getValue(DeviceModel::class.java)!!)
-//                    println(listDevice)
-//                    displayUsers(listDevice)
-                }
-                for (i in 0 until listDevice.size) {
-                    for (j in 0 until listPkgInstall.size) {
-                        // compare list.get(i) and list.get(j)
-                        if (listDevice[i].packageParams.equals(listPkgInstall[j])){
-
-                            }else{
-
-                           // listDevice.add(child.getValue(DeviceModel::class.java)!!)
-                         }
-                    }
                 }
                 listDevice.reverse()
 
-
+                myAdapter!!.notifyDataSetChanged()
             }
         })
 
@@ -185,5 +153,11 @@ class ReceivePointsFragment : Fragment(), ValueEventListener {
         })
     }
 
-
+    /**
+     * lay du lieu qua lai
+     */
+    companion object {
+        lateinit var instance: ReceivePointsFragment
+            private set
+    }
 }

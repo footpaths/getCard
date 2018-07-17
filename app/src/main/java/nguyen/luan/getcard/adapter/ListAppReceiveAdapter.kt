@@ -19,23 +19,38 @@ import android.content.Intent
 import android.net.Uri
 import androidx.core.content.ContextCompat.startActivity
 import android.content.pm.ResolveInfo
+import android.graphics.Color
+import nguyen.luan.getcard.fragment.ReceivePointsFragment
 
 
 /**
  * Created by PC on 12/12/2017.
  */
-class ListAppReceiveAdapter(private val mContext: Context) : RecyclerView.Adapter<ListAppReceiveAdapter.MyHolder>() {
+class ListAppReceiveAdapter(private val mContext: Context,var listApp : ArrayList<DeviceModel>) : RecyclerView.Adapter<ListAppReceiveAdapter.MyHolder>() {
 
-    private var listApp = ArrayList<DeviceModel>()
-    var pkgName :String ?=null
-    internal var databaseReference = FirebaseDatabase.getInstance().reference
-    override fun onBindViewHolder(holder: MyHolder, position: Int) {
+     var listPkgInstall = java.util.ArrayList<String>()
+
+     override fun onBindViewHolder(holder: MyHolder, position: Int) {
+        listPkgInstall =  ReceivePointsFragment.instance.listPkgInstall
+
         holder.txtName?.text = listApp[position].name
         holder.txtPoint?.text = "P: " + listApp[position].point?.toInt()
         Glide.with(mContext).load(listApp[position].icon)
                 .placeholder(R.drawable.holderimade)
                 .crossFade()
                 .into(holder?.imgIcon)
+        var pkg = listApp[position].packageParams
+        println(pkg)
+        for(i in 0 until listPkgInstall.size){
+            println(listPkgInstall[i])
+            if (pkg == listPkgInstall[i]){
+                holder.btnInstall.isEnabled= false
+                holder.btnInstall.setBackgroundColor(Color.RED)
+               // holder.btnInstall.setTextColor(Color.WHITE)
+            }else{
+               // holder.btnInstall.resources.getColor(R.color.blue)
+            }
+        }
 
         //   dialog.ProgressDialogLoader(mContext)
 
@@ -186,12 +201,7 @@ class ListAppReceiveAdapter(private val mContext: Context) : RecyclerView.Adapte
         return listApp.size
     }
 
-    fun setData(users: ArrayList<DeviceModel>) {
-        listApp.clear()
-        listApp.addAll(users)
-        notifyDataSetChanged()
 
-    }
 
     inner class MyHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
         override fun onClick(p0: View?) {

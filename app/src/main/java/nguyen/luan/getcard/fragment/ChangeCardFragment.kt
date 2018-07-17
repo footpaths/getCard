@@ -97,6 +97,7 @@ class ChangeCardFragment : Fragment(), View.OnClickListener, ChildEventListener 
                 }
             })
         }
+
         btnAdd.setOnClickListener {
 //            ScrapePlayStoreTask().execute("biz.gina.southernbreezetour")
             dialog = Dialog(activity)

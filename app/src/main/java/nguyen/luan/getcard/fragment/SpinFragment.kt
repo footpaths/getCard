@@ -7,7 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 
 import androidx.fragment.app.Fragment
-import nguyen.luan.getcard.R
+ import kotlinx.android.synthetic.main.spin_fragment.*
+ import nguyen.luan.getcard.R
 
 
 /**
@@ -17,6 +18,7 @@ class SpinFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
 
     }
 
