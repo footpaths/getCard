@@ -13,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
  import android.widget.Button
  import android.widget.EditText
+ import android.widget.TextView
  import android.widget.Toast
  import androidx.fragment.app.Fragment
  import androidx.recyclerview.widget.LinearLayoutManager
@@ -44,12 +45,13 @@ class ChangeCardFragment : Fragment() {
     private lateinit var dbChildPoint: DatabaseReference
     private var myAdapter: ListAppAdapter? = null
      var nameAppPackage: String? = null
-
+    var tvpoint:TextView? = null
      var point = 0
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         var url = ScreenPreference.instance.saveAvatar +"?type=large"
         Glide.with(activity).load(url).error(R.drawable.ic_launcher_background).into(imageView)
         user_name.text = ScreenPreference.instance.saveName
@@ -69,7 +71,7 @@ class ChangeCardFragment : Fragment() {
 
                 override fun onDataChange(p0: DataSnapshot) {
                     point = p0.value.toString().toInt()
-                    tvPoint.text = point.toString()
+                    tvpoint?.text = point.toString()
                 }
             })
         }
@@ -137,6 +139,7 @@ class ChangeCardFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         var view = inflater?.inflate(R.layout.fragment_user, container, false)
             instance = this
+        tvpoint = view.findViewById(R.id.tvPoint)
         return view
     }
 
