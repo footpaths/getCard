@@ -25,12 +25,12 @@ import java.util.*
  */
 class ListAppAdapter(private val mContext: Context, var listApp: ArrayList<DeviceModel>) : RecyclerView.Adapter<ListAppAdapter.MyHolder>() {
 
-//    private var listApp = ArrayList<DeviceModel>()
+    //    private var listApp = ArrayList<DeviceModel>()
     internal var databaseReference = FirebaseDatabase.getInstance().reference
-
+    var afterPoint = 0
     override fun onBindViewHolder(holder: MyHolder, position: Int) {
         holder.txtName?.text = listApp[position].name
-        holder.txtPoint?.text = "P: "+listApp[position].point!!.toInt()
+        holder.txtPoint?.text = "P: " + listApp[position].point!!.toInt()
         Glide.with(mContext).load(listApp[position].icon)
                 .placeholder(R.drawable.holderimade)
                 .crossFade()
@@ -48,7 +48,6 @@ class ListAppAdapter(private val mContext: Context, var listApp: ArrayList<Devic
 
 
                     edPoint.setText(listApp[position].point!!.toInt().toString())
-                    var afterPoint = 0
                     var totalPoint = ChangeCardFragment.instance.point + edPoint.text.toString().toInt()
 
 
@@ -56,7 +55,7 @@ class ListAppAdapter(private val mContext: Context, var listApp: ArrayList<Devic
                     btnSave.setOnClickListener {
                         val userTemps = dataSnapshot.getValue(DeviceModel::class.java)
 
-                        if (edPoint.text.toString().toInt() in 1..totalPoint ) {
+                        if (edPoint.text.toString().toInt() in 1..totalPoint) {
                             var point = edPoint.text.toString().toInt()
                             var fpoint = String.format("%06d", point)
                             userTemps!!.point = fpoint
@@ -105,7 +104,7 @@ class ListAppAdapter(private val mContext: Context, var listApp: ArrayList<Devic
 
                                 }
                             }
-                        }else{
+                        } else {
                             d.dismiss()
                             Toast.makeText(mContext, "point phải nhỏ hơn $totalPoint ", Toast.LENGTH_LONG).show()
                         }

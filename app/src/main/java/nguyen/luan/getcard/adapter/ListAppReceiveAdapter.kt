@@ -39,32 +39,16 @@ class ListAppReceiveAdapter(private val mContext: Context,var listApp : ArrayLis
                 .placeholder(R.drawable.holderimade)
                 .crossFade()
                 .into(holder?.imgIcon)
-        var pkg = listApp[position].packageParams
-        println(pkg)
-        for(i in 0 until listPkgInstall.size){
-            println(listPkgInstall[i])
-            if (pkg == listPkgInstall[i]){
-                holder.btnInstall.isEnabled= false
-                holder.btnInstall.setBackgroundColor(Color.RED)
-               // holder.btnInstall.setTextColor(Color.WHITE)
-            }else{
-               // holder.btnInstall.resources.getColor(R.color.blue)
-            }
-        }
 
-        //   dialog.ProgressDialogLoader(mContext)
 
         holder.btnInstall.setOnClickListener {
             // dialog.progress_dialog_creation("Checking...")
             //
             val isAppInstalled = appInstalledOrNot(listApp[position].packageParams.toString())
             var appPackageName = listApp[position].packageParams.toString()
-//
+
             if (isAppInstalled) {
-//            //This intent will help you to launch if the package is already installed
-                /// val LaunchIntent = mContext.packageManager.getLaunchIntentForPackage("biz.gina.southernbreezetour")
-                // mContext.startActivity(LaunchIntent)
-                //    dialog.progress_dialog_dismiss()
+
                 Toast.makeText(mContext, "Application is already installed.", Toast.LENGTH_SHORT).show()
                 //   Log.i("kq", "Application is already installed.")
             } else {
@@ -73,90 +57,9 @@ class ListAppReceiveAdapter(private val mContext: Context,var listApp : ArrayLis
                 } catch (anfe: android.content.ActivityNotFoundException) {
                     mContext.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=$appPackageName")))
                 }
-
-                // Do whatever we want to do if application not installed
-                // For example, Redirect to play store
-                //   dialog.progress_dialog_dismiss()
-                //   Toast.makeText(mContext, "Application is already installed.", Toast.LENGTH_SHORT).show()
-
-                //  Log.i("kq", "Application is not currently installed.")
-
             }
         }
 
-        /*    holder.btnEdit.setOnClickListener {
-                databaseReference.child("User").child(ScreenPreference.instance.saveEmail).child(ScreenPreference.instance.saveDeviceID).addListenerForSingleValueEvent(object : ValueEventListener {
-                    override fun onDataChange(dataSnapshot: DataSnapshot) {
-                        val d = Dialog(mContext)
-                        d.setContentView(R.layout.cell_fragment_user_install)
-                        var edPoint: EditText
-
-
-                        edPoint = d.findViewById<View>(R.id.edPoint) as EditText
-
-
-                        edPoint.setText(listApp[position].point)
-
-
-
-                        var btnSave = d.findViewById<View>(R.id.btnSave) as Button
-                        btnSave.setOnClickListener {
-                            val userTemps = dataSnapshot.getValue(DeviceModel::class.java)
-                            var point = edPoint.text.toString().toInt().toString()
-                            userTemps!!.point = point
-                            userTemps!!.icon = listApp[position].icon
-                            userTemps!!.name = listApp[position].name
-                            userTemps!!.status = listApp[position].status
-                            userTemps!!.idParams = listApp[position].idParams
-                            for (snapshot in dataSnapshot.children) {
-                                val userTemp = snapshot.getValue(DeviceModel::class.java)
-                                if (listApp[position].idParams == userTemp?.idParams) {
-
-                                    databaseReference.child("User")
-                                            .child(ScreenPreference.instance.saveEmail)
-                                            .child(ScreenPreference.instance.saveDeviceID)
-                                            .child(snapshot.key.toString())
-                                            .setValue(userTemps) { databaseError, databaseReference ->
-                                                if (databaseError != null) {
-                                                    Toast.makeText(mContext, "Cập nhật Error!!", Toast.LENGTH_LONG).show()
-
-
-                                                } else {
-                                                    Toast.makeText(mContext, "Cập nhật thành công!! ", Toast.LENGTH_LONG).show()
-                                                    clickListener?.OnItemClickUpdate()
-                                                }
-                                            }
-
-                                    databaseReference.child("listApp")
-                                            .child(ScreenPreference.instance.saveEmail)
-                                             .child(snapshot.key.toString())
-                                            .setValue(userTemps) { databaseError, databaseReference ->
-                                                if (databaseError != null) {
-                                                    Toast.makeText(mContext, "Cập nhật Error!!", Toast.LENGTH_LONG).show()
-
-
-                                                } else {
-                                                    Toast.makeText(mContext, "Cập nhật thành công!! ", Toast.LENGTH_LONG).show()
-                                                    clickListener?.OnItemClickUpdate()
-                                                }
-                                            }
-                                    d.dismiss()
-
-                                }
-                            }
-                        }
-
-
-                        d.show()
-
-
-                    }
-
-                    override fun onCancelled(databaseError: DatabaseError) {
-
-                    }
-                })
-            }*/
 
     }
 
@@ -179,23 +82,7 @@ class ListAppReceiveAdapter(private val mContext: Context,var listApp : ArrayLis
 
     }
 
-/*
-    override fun onBindViewHolder(holder: MyHolder?, position: Int) {
-        holder?.txtName?.text = list[position].name
-        holder?.txtContent?.text = list[position].content
-//        holder?.txtDate?.text = list[position].date
-//        holder?.tvPrice?.text ="$ "+list[position].hotelPriceSummaries[0].totalPrice.toString()
-//        var url=""
-//        if(list[position].hotelFiles.size!=0){
-//            url=list[position].hotelFiles[0].fileUrl
-//        }
-//        Glide.with(context).load(url)
-//                .placeholder(R.drawable.holderimade)
-//                .crossFade()
-//                .thumbnail(0.5f)
-//                .into(holder?.thumbImage)
 
-    }*/
 
     override fun getItemCount(): Int {
         return listApp.size
