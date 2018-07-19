@@ -20,6 +20,7 @@ import android.net.Uri
 import androidx.core.content.ContextCompat.startActivity
 import android.content.pm.ResolveInfo
 import android.graphics.Color
+import nguyen.luan.getcard.Utils.ScreenPreference
 import nguyen.luan.getcard.fragment.ReceivePointsFragment
 
 
@@ -55,8 +56,14 @@ class ListAppReceiveAdapter(private val mContext: Context,var listApp : ArrayLis
                 try {
                     mContext.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id="+ReceivePointsFragment.instance.appPackageName)))
                     ReceivePointsFragment.instance.statusInstall = true
+                    ScreenPreference.instance.saveEmailOther = listApp[position].email!!
+                    ScreenPreference.instance.saveAndroidIdOther = listApp[position].idDevice!!
+                    ScreenPreference.instance.saveNameOther = listApp[position].name!!
                 } catch (anfe: android.content.ActivityNotFoundException) {
                     ReceivePointsFragment.instance.statusInstall = true
+                    ScreenPreference.instance.saveEmailOther = listApp[position].email!!
+                    ScreenPreference.instance.saveAndroidIdOther = listApp[position].idDevice!!
+                    ScreenPreference.instance.saveNameOther = listApp[position].name!!
                     mContext.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id="+ReceivePointsFragment.instance.appPackageName)))
                 }
             }
