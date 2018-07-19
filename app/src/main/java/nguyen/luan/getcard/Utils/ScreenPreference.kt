@@ -107,16 +107,34 @@ class ScreenPreference (private val context: Context) {
 
         }
 
-    var saveTotalPoint: Int
+    var saveNameOther: String
 
-        get() = sharedPreferences.getInt("price", 0)
+        get() = sharedPreferences.getString("saveNameOther", "")
 
         set(value) {
 
-            sharedPreferences.edit().putInt("price", value).apply()
+            sharedPreferences.edit().putString("saveNameOther", value).apply()
 
         }
 
+    var saveEmailOther: String
+
+        get() = sharedPreferences.getString("saveEmailOther", "")
+
+        set(value) {
+
+            sharedPreferences.edit().putString("saveEmailOther", value).apply()
+
+        }
+    var saveAndroidIdOther: String
+
+        get() = sharedPreferences.getString("saveAndroidIdOther", "")
+
+        set(value) {
+
+            sharedPreferences.edit().putString("saveAndroidIdOther", value).apply()
+
+        }
 
 
 

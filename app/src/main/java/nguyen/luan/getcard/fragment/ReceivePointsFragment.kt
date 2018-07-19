@@ -1,5 +1,6 @@
 package nguyen.luan.getcard.fragment
 
+import android.app.Dialog
 import android.os.Bundle
 
 import android.view.LayoutInflater
@@ -15,11 +16,14 @@ import nguyen.luan.getcard.Utils.ScreenPreference
 import nguyen.luan.getcard.adapter.ListAppReceiveAdapter
 import nguyen.luan.getcard.model.DeviceModel
 import android.content.Intent
+import android.widget.Button
+import android.widget.EditText
 import android.widget.Toast
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import nguyen.luan.getcard.adapter.EndlessRecyclerViewScrollListener
+import nguyen.luan.getcard.adapter.ListAppAdapter
 import java.util.*
 
 
@@ -34,6 +38,7 @@ class ReceivePointsFragment : Fragment() {
 
     private lateinit var databaseReference: DatabaseReference
     private lateinit var dbChild: DatabaseReference
+    private lateinit var dbAddPoint: DatabaseReference
     private lateinit var dbListUserInstallApp: DatabaseReference
     private var myAdapter: ListAppReceiveAdapter? = null
     var statusInstall = false
@@ -73,21 +78,99 @@ class ReceivePointsFragment : Fragment() {
         super.onResume()
         loadListAppinDevice()
         checkInstall()
-        loadData()
+//        loadData()
 
 
     }
 
     private fun checkInstall() {
         println(statusInstall)
+        loadData()
+
         if (statusInstall) {
             if (listAppinDevice != null) {
                 if (listAppinDevice.contains(appPackageName)) {
                     Toast.makeText(activity, "app đã install", Toast.LENGTH_SHORT).show()
                     userInfo!!.child(ScreenPreference.instance.saveEmail).child("listUserInstall -" + ScreenPreference.instance.saveDeviceID).push().setValue(appPackageName)
+
+                    databaseReference.child("User").child(ScreenPreference.instance.saveEmailOther)
+                            .child(ScreenPreference.instance.saveAndroidIdOther)
+                            .child(ScreenPreference.instance.saveNameOther).addListenerForSingleValueEvent(object : ValueEventListener {
+                        override fun onDataChange(dataSnapshot: DataSnapshot) {
+
+
+                                val userTemps = dataSnapshot.getValue(DeviceModel::class.java)
+                                print(userTemps)
+
+
+                                    var point = userTemps!!.point!!.toInt() - 1
+                                    var fpoint = String.format("%06d", point)
+                                    userTemps!!.point = fpoint
+
+
+
+
+                                            databaseReference.child("User")
+                                                    .child(ScreenPreference.instance.saveEmail)
+                                                    .child(ScreenPreference.instance.saveDeviceID)
+                                                    .child(ScreenPreference.instance.saveNameOther)
+                                                    .setValue(userTemps) { databaseError, databaseReference ->
+                                                        if (databaseError != null) {
+                                                            Toast.makeText(activity, "Cập nhật Error!!", Toast.LENGTH_LONG).show()
+
+
+                                                        } else {
+                                                            Toast.makeText(activity, "Cập nhật thành công!! ", Toast.LENGTH_LONG).show()
+                                                            val userInfo = FirebaseDatabase.getInstance().getReference("User")
+                                                            userInfo.child(ScreenPreference.instance.saveEmail).child("userPoint").addListenerForSingleValueEvent(object : ValueEventListener {
+                                                                override fun onCancelled(p0: DatabaseError) {
+
+                                                                }
+
+                                                                override fun onDataChange(p0: DataSnapshot) {
+                                                                    var totalPoint = p0.value.toString().toInt() + 1
+                                                                    userInfo.child(ScreenPreference.instance.saveEmail).child("userPoint").setValue(totalPoint.toString())
+                                                                }
+                                                            })
+
+                                                        }
+                                                    }
+
+                                            databaseReference.child("listApp")
+
+                                                    .child(ScreenPreference.instance.saveNameOther + "-" + ScreenPreference.instance.saveDeviceID)
+                                                    .setValue(userTemps) { databaseError, databaseReference ->
+                                                        if (databaseError != null) {
+                                                            Toast.makeText(activity, "Cập nhật Error!!", Toast.LENGTH_LONG).show()
+
+
+                                                        } else {
+                                                            Toast.makeText(activity, "Cập nhật thành công!! ", Toast.LENGTH_LONG).show()
+//                                                clickListener?.OnItemClickUpdate()
+                                                        }
+                                                    }
+
+
+
+
+
+
+
+
+
+
+
+                        }
+
+                        override fun onCancelled(databaseError: DatabaseError) {
+
+                        }
+                    })
+
+
+
                 } else {
                     Toast.makeText(activity, "app chưa install", Toast.LENGTH_SHORT).show()
-
                 }
             }
 

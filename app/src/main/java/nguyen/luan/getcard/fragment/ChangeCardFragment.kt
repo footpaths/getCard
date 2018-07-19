@@ -42,6 +42,7 @@ class ChangeCardFragment : Fragment() {
     private val listApp = ArrayList<DeviceModel>()
     private lateinit var databaseReference: DatabaseReference
     private lateinit var dbChild: DatabaseReference
+    private lateinit var dbChild1: DatabaseReference
     private lateinit var dbChildPoint: DatabaseReference
     private var myAdapter: ListAppAdapter? = null
      var nameAppPackage: String? = null
@@ -55,6 +56,7 @@ class ChangeCardFragment : Fragment() {
         var url = ScreenPreference.instance.saveAvatar +"?type=large"
         Glide.with(activity).load(url).error(R.drawable.ic_launcher_background).into(imageView)
         user_name.text = ScreenPreference.instance.saveName
+
         var firstApp =  ScreenPreference.instance.saveFirstApp
         if(!firstApp){
             val database = FirebaseDatabase.getInstance()
@@ -124,6 +126,18 @@ class ChangeCardFragment : Fragment() {
         rcvListApp.adapter = myAdapter
         myAdapter!!.notifyDataSetChanged()
 
+        var dbQuery1:Query?=null
+        dbChild1 = databaseReference.child("User")
+        dbQuery1 = dbChild1.startAt("icon")
+        dbChild1.addValueEventListener(object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {
+
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+                var b = p0.value
+            }
+        })
 
         myAdapter!!.setOnItemClickListener(object : ListAppAdapter.ClickListener {
             override fun OnItemClick(position: Int, v: View) {
@@ -182,7 +196,7 @@ class ChangeCardFragment : Fragment() {
             var id = ids + uuid
             println(id)
 
-            var deviceParams = DeviceModel(nameApp, icon, "0", "1",id,nameAppPackage.toString())
+            var deviceParams = DeviceModel(nameApp, icon, "0", emailParam,androidId,id,nameAppPackage.toString())
 
             userInfo.child(emailParam).child(androidId).child(nameApp).setValue(deviceParams)
            // userInfo.child(emailParam).child("Pkg -$androidId").child(nameApp).setValue(nameAppPackage)

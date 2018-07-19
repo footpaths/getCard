@@ -61,7 +61,8 @@ class ListAppAdapter(private val mContext: Context, var listApp: ArrayList<Devic
                             userTemps!!.point = fpoint
                             userTemps!!.icon = listApp[position].icon
                             userTemps!!.name = listApp[position].name
-                            userTemps!!.status = listApp[position].status
+                            userTemps!!.email = listApp[position].email
+                            userTemps!!.idDevice = listApp[position].idDevice
                             userTemps!!.packageParams = listApp[position].packageParams
                             userTemps!!.idParams = listApp[position].idParams
                             for (snapshot in dataSnapshot.children) {
