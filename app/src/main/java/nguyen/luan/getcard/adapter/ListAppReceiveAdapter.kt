@@ -45,7 +45,7 @@ class ListAppReceiveAdapter(private val mContext: Context,var listApp : ArrayLis
             // dialog.progress_dialog_creation("Checking...")
             //
             val isAppInstalled = appInstalledOrNot(listApp[position].packageParams.toString())
-            var appPackageName = listApp[position].packageParams.toString()
+               ReceivePointsFragment.instance.appPackageName = listApp[position].packageParams.toString()
 
             if (isAppInstalled) {
 
@@ -53,9 +53,11 @@ class ListAppReceiveAdapter(private val mContext: Context,var listApp : ArrayLis
                 //   Log.i("kq", "Application is already installed.")
             } else {
                 try {
-                    mContext.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$appPackageName")))
+                    mContext.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id="+ReceivePointsFragment.instance.appPackageName)))
+                    ReceivePointsFragment.instance.statusInstall = true
                 } catch (anfe: android.content.ActivityNotFoundException) {
-                    mContext.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=$appPackageName")))
+                    ReceivePointsFragment.instance.statusInstall = true
+                    mContext.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id="+ReceivePointsFragment.instance.appPackageName)))
                 }
             }
         }

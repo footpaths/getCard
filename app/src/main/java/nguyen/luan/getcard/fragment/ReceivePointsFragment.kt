@@ -15,6 +15,7 @@ import nguyen.luan.getcard.Utils.ScreenPreference
 import nguyen.luan.getcard.adapter.ListAppReceiveAdapter
 import nguyen.luan.getcard.model.DeviceModel
 import android.content.Intent
+import android.widget.Toast
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
@@ -33,22 +34,23 @@ class ReceivePointsFragment : Fragment() {
 
     private lateinit var databaseReference: DatabaseReference
     private lateinit var dbChild: DatabaseReference
+    private lateinit var dbListUserInstallApp: DatabaseReference
     private var myAdapter: ListAppReceiveAdapter? = null
+    var statusInstall = false
+    var appPackageName: String? = null
     var dataBaseQuery: Query? = null
     var pkgName: String? = null
     var listAppinDevice = ArrayList<String>()
     var listPkgInstall = ArrayList<String>()
+    var listUserInstallApp = ArrayList<String>()
+    var userInfo: DatabaseReference? = null
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val linearLayoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
         rcvListAppReceive.layoutManager = linearLayoutManager
         instance = this
-
-
-
-
-
-
+        val database = FirebaseDatabase.getInstance()
+        userInfo = database.getReference("User")
 
 
         // println(listAppinDevice)
@@ -70,8 +72,28 @@ class ReceivePointsFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         loadListAppinDevice()
+        checkInstall()
         loadData()
 
+
+    }
+
+    private fun checkInstall() {
+        println(statusInstall)
+        if (statusInstall) {
+            if (listAppinDevice != null) {
+                if (listAppinDevice.contains(appPackageName)) {
+                    Toast.makeText(activity, "app đã install", Toast.LENGTH_SHORT).show()
+                    userInfo!!.child(ScreenPreference.instance.saveEmail).child("listUserInstall -" + ScreenPreference.instance.saveDeviceID).push().setValue(appPackageName)
+                } else {
+                    Toast.makeText(activity, "app chưa install", Toast.LENGTH_SHORT).show()
+
+                }
+            }
+
+        } else {
+
+        }
     }
 
     private fun loadListAppinDevice() {
@@ -79,12 +101,12 @@ class ReceivePointsFragment : Fragment() {
         val mainIntent = Intent(Intent.ACTION_MAIN, null)
         mainIntent.addCategory(Intent.CATEGORY_LAUNCHER)
         val pkgAppsList = activity!!.packageManager.queryIntentActivities(mainIntent, 0)
+        listAppinDevice.clear()
 
 
         //var dialog = DialogLoading
         for (i in 0 until pkgAppsList.size) {
             var info = pkgAppsList[i].activityInfo
-
             pkgName = info.packageName
             if (pkgName != null) {
                 listAppinDevice.add(pkgName!!)
@@ -106,6 +128,7 @@ class ReceivePointsFragment : Fragment() {
         databaseReference = FirebaseDatabase.getInstance().reference
         var androidId = ScreenPreference.instance.saveDeviceID
         dbChild = databaseReference.child("User").child(ScreenPreference.instance.saveEmail).child("Pkg -$androidId")
+        dbListUserInstallApp = databaseReference.child("User").child(ScreenPreference.instance.saveEmail).child("listUserInstall -" + ScreenPreference.instance.saveDeviceID)
         dbChild.addValueEventListener(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {
             }
@@ -118,6 +141,22 @@ class ReceivePointsFragment : Fragment() {
 
             }
         })
+
+        dbListUserInstallApp.addValueEventListener(object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {
+
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+                listUserInstallApp.clear()
+                for (child in p0.children) {
+                    listUserInstallApp.add(child.value.toString())
+
+                }
+                println(listUserInstallApp)
+            }
+        })
+
 
 
         rcvListAppReceive.layoutManager = LinearLayoutManager(activity)
@@ -137,11 +176,17 @@ class ReceivePointsFragment : Fragment() {
                     /*for(i in 0 until listAppinDevice.size){
 
                     }*/
+
+
+
                     listDeviceTemp.clear()
                     listDeviceTemp.add(child.getValue(DeviceModel::class.java)!!)
-                    if (!listAppinDevice.contains(listDeviceTemp[0].packageParams.toString())) {
-                        listDevice.add(child.getValue(DeviceModel::class.java)!!)
+                    if (!listUserInstallApp.contains(listDeviceTemp[0].packageParams.toString())){
+                        if (!listAppinDevice.contains(listDeviceTemp[0].packageParams.toString())) {
+                            listDevice.add(child.getValue(DeviceModel::class.java)!!)
+                        }
                     }
+                       
                 }
 
                 listDevice.reverse()
@@ -149,6 +194,8 @@ class ReceivePointsFragment : Fragment() {
                 myAdapter!!.notifyDataSetChanged()
             }
         })
+
+
 
         myAdapter!!.setOnItemClickListener(object : ListAppReceiveAdapter.ClickListener {
             override fun OnItemClick(position: Int, v: View) {
