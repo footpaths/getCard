@@ -186,7 +186,7 @@ class ReceivePointsFragment : Fragment() {
                             listDevice.add(child.getValue(DeviceModel::class.java)!!)
                         }
                     }
-                       
+
                 }
 
                 listDevice.reverse()

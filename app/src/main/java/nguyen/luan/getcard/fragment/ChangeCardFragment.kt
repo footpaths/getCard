@@ -185,7 +185,7 @@ class ChangeCardFragment : Fragment() {
             var deviceParams = DeviceModel(nameApp, icon, "0", "1",id,nameAppPackage.toString())
 
             userInfo.child(emailParam).child(androidId).child(nameApp).setValue(deviceParams)
-            userInfo.child(emailParam).child("Pkg -$androidId").child(nameApp).setValue(nameAppPackage)
+           // userInfo.child(emailParam).child("Pkg -$androidId").child(nameApp).setValue(nameAppPackage)
           //  userInfo.child(emailParam).child("listPkgApp -$androidId").child(nameApp).setValue(nameAppPackage)
 
             listApp.child("$nameApp-$androidId").setValue(deviceParams)
