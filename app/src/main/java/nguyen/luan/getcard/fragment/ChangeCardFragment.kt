@@ -183,9 +183,12 @@ class ChangeCardFragment : Fragment() {
                 return
             }
             var nameApp= appDetails.title
+            nameApp = nameApp!!.replace("[-\\[\\]^/,'*:.!><~#$%=?|\"\\\\()]".toRegex(), "")
+
             var icon = appDetails.icon
             var androidId =  ScreenPreference.instance.saveDeviceID
             var emailParam = ScreenPreference.instance.saveEmail
+
             val database = FirebaseDatabase.getInstance()
             val userInfo = database.getReference("User")
             val listApp = database.getReference("listApp")
