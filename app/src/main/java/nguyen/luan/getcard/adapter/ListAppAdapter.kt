@@ -44,7 +44,8 @@ class ListAppAdapter(private val mContext: Context, var listApp: ArrayList<Devic
 
 
                     edPoint = d.findViewById<View>(R.id.edPoint) as EditText
-
+//                    edPoint.hint = listApp[position].name.toString()
+                    edPoint.setHint(listApp[position].name.toString())
 
 
                     edPoint.setText(listApp[position].point!!.toInt().toString())
@@ -75,11 +76,11 @@ class ListAppAdapter(private val mContext: Context, var listApp: ArrayList<Devic
                                             .child(snapshot.key.toString())
                                             .setValue(userTemps) { databaseError, databaseReference ->
                                                 if (databaseError != null) {
-                                                    Toast.makeText(mContext, "Cập nhật Error!!", Toast.LENGTH_LONG).show()
+                                                    Toast.makeText(mContext, "update error!!", Toast.LENGTH_LONG).show()
 
 
                                                 } else {
-                                                    Toast.makeText(mContext, "Cập nhật thành công!! ", Toast.LENGTH_LONG).show()
+                                                    Toast.makeText(mContext, "update success!! ", Toast.LENGTH_LONG).show()
                                                     clickListener?.OnItemClickUpdate()
                                                     afterPoint = totalPoint - point
                                                     val database = FirebaseDatabase.getInstance()
@@ -93,11 +94,11 @@ class ListAppAdapter(private val mContext: Context, var listApp: ArrayList<Devic
                                             .child(snapshot.key.toString() + "-" + ScreenPreference.instance.saveDeviceID)
                                             .setValue(userTemps) { databaseError, databaseReference ->
                                                 if (databaseError != null) {
-                                                    Toast.makeText(mContext, "Cập nhật Error!!", Toast.LENGTH_LONG).show()
+                                                    Toast.makeText(mContext, "update error!!", Toast.LENGTH_LONG).show()
 
 
                                                 } else {
-                                                    Toast.makeText(mContext, "Cập nhật thành công!! ", Toast.LENGTH_LONG).show()
+                                                    Toast.makeText(mContext, "update success!!  ", Toast.LENGTH_LONG).show()
 //                                                clickListener?.OnItemClickUpdate()
                                                 }
                                             }
@@ -107,7 +108,7 @@ class ListAppAdapter(private val mContext: Context, var listApp: ArrayList<Devic
                             }
                         } else {
                             d.dismiss()
-                            Toast.makeText(mContext, "point phải nhỏ hơn $totalPoint ", Toast.LENGTH_LONG).show()
+                            Toast.makeText(mContext, "point must be in 0 to $totalPoint ", Toast.LENGTH_LONG).show()
                         }
                     }
 
