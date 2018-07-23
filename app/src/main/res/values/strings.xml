@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">GetCard</string>
-    <string name="title_home">Nhận điểm</string>
-    <string name="title_dashboard">Quay Số</string>
-    <string name="title_notifications">Đổi card</string>
+    <string name="title_home">Install App</string>
+    <string name="title_dashboard">Guide</string>
+    <string name="title_notifications">Push App</string>
     <string name="facebook_app_id">902720523262735</string>
     <string name="fb_login_protocol_scheme">fb902720523262735</string>
 </resources>

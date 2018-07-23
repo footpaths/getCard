@@ -43,12 +43,13 @@ class MainActivity : AppCompatActivity() {
             }
             R.id.navigation_dashboard -> {
                 //moveScreen = MoveScreen(this@MainActivity)
-                moveScreen!!.firstMoveFragment(R.id.content, SpinFragment())
+                moveScreen!!.firstMoveFragment(R.id.content, ChangeCardFragment())
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_notifications -> {
               //  moveScreen = MoveScreen(this@MainActivity)
-                moveScreen!!.firstMoveFragment(R.id.content, ChangeCardFragment())
+
+                moveScreen!!.firstMoveFragment(R.id.content, SpinFragment())
                 return@OnNavigationItemSelectedListener true
             }
         }
