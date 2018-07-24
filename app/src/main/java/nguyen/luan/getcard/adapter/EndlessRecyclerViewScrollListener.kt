@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 abstract class EndlessRecyclerViewScrollListener(var mLinearLayoutManager: LinearLayoutManager) : RecyclerView.OnScrollListener() {
     // The minimum amount of items to have below your current scroll position
     // before loading more.
-    private val visibleThreshold = 4
+    private val visibleThreshold = 35
     // The current offset index of data you have loaded
     private var currentPage = 0
     // The total number of items in the dataset after the last load

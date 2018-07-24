@@ -113,7 +113,7 @@ class ScreenPreference (private val context: Context) {
 
         set(value) {
 
-            sharedPreferences.edit().putString("saveNameOther", value).apply()
+            sharedPreferences.edit().putString("saveNameOther  ", value).apply()
 
         }
 

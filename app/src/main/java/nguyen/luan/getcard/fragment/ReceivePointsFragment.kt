@@ -16,9 +16,8 @@ import nguyen.luan.getcard.Utils.ScreenPreference
 import nguyen.luan.getcard.adapter.ListAppReceiveAdapter
 import nguyen.luan.getcard.model.DeviceModel
 import android.content.Intent
-import android.widget.Button
-import android.widget.EditText
-import android.widget.Toast
+import android.widget.*
+import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
@@ -35,13 +34,19 @@ class ReceivePointsFragment : Fragment() {
 
     private val listDevice = ArrayList<DeviceModel>()
     private val listDeviceTemp = ArrayList<DeviceModel>()
+    private var currentVisibleItemCount: Int = 0
+    private var currentScrollState: Int = 0
+    private var currentFirstVisibleItem: Int = 0
+    private var totalItem: Int = 0
+    private var lBelow: LinearLayout? = null
 
     private lateinit var databaseReference: DatabaseReference
     private lateinit var dbChild: DatabaseReference
     private lateinit var dbAddPoint: DatabaseReference
     private lateinit var dbListUserInstallApp: DatabaseReference
     private var myAdapter: ListAppReceiveAdapter? = null
-    var linearLayoutManager:LinearLayoutManager?=null
+    var linearLayoutManager: LinearLayoutManager? = null
+    var rcvListAppReceive: RecyclerView? = null
     var statusInstall = false
     var appPackageName: String? = null
     var dataBaseQuery: Query? = null
@@ -50,47 +55,15 @@ class ReceivePointsFragment : Fragment() {
     var listPkgInstall = ArrayList<String>()
     var listUserInstallApp = ArrayList<String>()
     var userInfo: DatabaseReference? = null
-    var orderOldId= ""
+    var orderOldId = ""
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-         linearLayoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
-        rcvListAppReceive.layoutManager = linearLayoutManager
+        linearLayoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+        rcvListAppReceive?.layoutManager = linearLayoutManager
         instance = this
         val database = FirebaseDatabase.getInstance()
         userInfo = database.getReference("User")
 
-        rcvListAppReceive?.addOnScrollListener(object : EndlessRecyclerViewScrollListener(linearLayoutManager!!) {
-
-            override fun onLoadMore(page: Int, totalItemsCount: Int) {
-                dataBaseQuery = databaseReference.child("listApp").orderByChild("point").limitToFirst(20)
-                dataBaseQuery!!.addValueEventListener(object : ValueEventListener {
-                    override fun onCancelled(p0: DatabaseError) {
-
-                    }
-
-                    override fun onDataChange(snapshot: DataSnapshot) {
-                        listDevice.clear()
-                        for (child in snapshot.children) {
-                            orderOldId = child.key!!
-
-
-                            listDeviceTemp.clear()
-                            listDeviceTemp.add(child.getValue(DeviceModel::class.java)!!)
-                            if (!listUserInstallApp.contains(listDeviceTemp[0].packageParams.toString())) {
-                                if (!listAppinDevice.contains(listDeviceTemp[0].packageParams.toString())) {
-                                    listDevice.add(child.getValue(DeviceModel::class.java)!!)
-                                }
-                            }
-
-                        }
-
-                        listDevice.reverse()
-
-                        myAdapter!!.notifyDataSetChanged()
-                    }
-                })
-            }
-        })
 
     }
 
@@ -209,7 +182,7 @@ class ReceivePointsFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         var view = inflater?.inflate(R.layout.receive_points_fragment, container, false)
-
+        rcvListAppReceive = view.findViewById(R.id.rcvListAppReceive)
         return view
     }
 
@@ -250,14 +223,13 @@ class ReceivePointsFragment : Fragment() {
         })
 
 
-
-        rcvListAppReceive.layoutManager = LinearLayoutManager(activity)
+//        rcvListAppReceive?.layoutManager = LinearLayoutManager(activity)
         myAdapter = ListAppReceiveAdapter(this!!.activity!!, listDevice)
 
-        rcvListAppReceive.adapter = myAdapter
+        rcvListAppReceive?.adapter = myAdapter
 //        dbChild = databaseReference.child("listApp")
-        dataBaseQuery = databaseReference.child("listApp").orderByChild("point").limitToFirst(5)
-        dataBaseQuery!!.addValueEventListener(object : ValueEventListener {
+        dataBaseQuery = databaseReference.child("listApp").orderByChild("point").limitToLast(30)
+        dataBaseQuery!!.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {
 
             }
@@ -285,6 +257,37 @@ class ReceivePointsFragment : Fragment() {
         })
 
 
+        rcvListAppReceive?.addOnScrollListener(object : EndlessRecyclerViewScrollListener(linearLayoutManager!!) {
+
+            override fun onLoadMore(page: Int, totalItemsCount: Int) {
+                dataBaseQuery = databaseReference.child("listApp").orderByChild("point").limitToFirst(totalItemsCount + 30)
+                dataBaseQuery!!.addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onCancelled(p0: DatabaseError) {
+
+                    }
+
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        listDevice.clear()
+                        for (child in snapshot.children) {
+                            orderOldId = child.key!!
+
+
+                            listDeviceTemp.clear()
+                            listDeviceTemp.add(child.getValue(DeviceModel::class.java)!!)
+                            if (!listUserInstallApp.contains(listDeviceTemp[0].packageParams.toString())) {
+                                if (!listAppinDevice.contains(listDeviceTemp[0].packageParams.toString())) {
+                                    listDevice.add(child.getValue(DeviceModel::class.java)!!)
+                                }
+                            }
+
+                        }
+
+                        listDevice.reverse()
+                        myAdapter!!.notifyDataSetChanged()
+                    }
+                })
+            }
+        })
 
         myAdapter!!.setOnItemClickListener(object : ListAppReceiveAdapter.ClickListener {
             override fun OnItemClick(position: Int, v: View) {
