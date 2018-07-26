@@ -292,6 +292,37 @@
           "status": 2
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:950041170535:android:4b1ee85a751d2c0b",
+        "android_client_info": {
+          "package_name": "vn.dhstudio.topinstall"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "950041170535-7eqpb1nb0i28ea36u3ln5rsfvosrnuot.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAsvv97j_IaajdQsAMvRIUjKgC7NYKrSdQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
     }
   ],
   "configuration_version": "1"

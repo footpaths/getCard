@@ -39,7 +39,7 @@
                 android:id="@+id/txtName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Name" />
+                android:text="@string/name" />
 
         </LinearLayout>
 
@@ -58,17 +58,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
-                android:text="Point: "
+                android:text="@string/point"
                 android:textColor="@color/red"
                 android:textStyle="bold" />
         </LinearLayout>
 
 
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:layout_marginStart="5dp"
+
             android:layout_weight="0.5"
             android:gravity="center|right"
             android:orientation="horizontal">
@@ -76,10 +76,13 @@
             <Button
                 android:id="@+id/btnInstall"
                 android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:background="@color/blue"
-                android:layout_marginEnd="5dp"
-                 android:text="Install"
+                android:layout_height="35dp"
+                android:paddingStart="3dp"
+                android:paddingEnd="3dp"
+                android:background="@drawable/custom_border_find"
+                android:layout_marginEnd="4dp"
+                 android:text="@string/install"
+
                 android:textColor="@color/colorWhite" />
 
         </LinearLayout>

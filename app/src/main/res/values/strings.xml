@@ -1,9 +1,19 @@
 <resources>
-    <string name="app_name">GetCard</string>
+    <string name="app_name">Top Install</string>
     <string name="title_home">Install App</string>
     <string name="title_dashboard">Guide</string>
     <string name="title_notifications">Push App</string>
     <string name="facebook_app_id">902720523262735</string>
     <string name="fb_login_protocol_scheme">fb902720523262735</string>
+    <string name="banner_ad_unit_id">ca-app-pub-8443310519906912/9148242220</string>
+    <string name="wellcom_to_install_top">Wellcom To Install Top</string>
+    <string name="point">Point:</string>
+    <string name="edit">Edit</string>
+    <string name="name">Name</string>
+    <string name="install">Install</string>
+    <string name="your_application_package">Your application (package)</string>
+    <string name="example_com_facebook_lite">example: com.facebook.lite</string>
+    <string name="your_point">your point:</string>
+    <string name="point_for_this_application">Point for this application</string>
 </resources>
 

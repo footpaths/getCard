@@ -21,7 +21,7 @@
                 android:layout_gravity="center"
                 android:layout_marginBottom="10dp"
                 android:gravity="center"
-                android:text="Point for this application"
+                android:text="@string/point_for_this_application"
                 android:textSize="20sp" />
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
@@ -31,7 +31,7 @@
                     android:id="@+id/edPoint"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="your point:" />
+                    android:hint="@string/your_point" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button
