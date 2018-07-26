@@ -199,7 +199,7 @@ class ReceivePointsFragment : Fragment() {
     private fun loadData() {
         listDevice.clear()
         databaseReference = FirebaseDatabase.getInstance().reference
-        var androidId = ScreenPreference.instance.saveDeviceID
+        var androidId = ScreenPreference.getInstance(activity!!).saveDeviceID
         dbChild = databaseReference.child("User").child(ScreenPreference.instance.saveEmail).child("Pkg -$androidId")
         dbListUserInstallApp = databaseReference.child("User").child(ScreenPreference.instance.saveEmail).child("listUserInstall -" + ScreenPreference.instance.saveDeviceID)
         dbChild.addListenerForSingleValueEvent(object : ValueEventListener {

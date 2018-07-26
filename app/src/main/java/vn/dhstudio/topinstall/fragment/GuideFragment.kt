@@ -13,7 +13,7 @@ import androidx.fragment.app.Fragment
 /**
  * Created by PC on 12/8/2017.
  */
-class SpinFragment : Fragment() {
+class GuideFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

@@ -1,9 +1,153 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
-<TextView
-    android:layout_width="wrap_content"
-    android:text="spin"
-    android:layout_height="wrap_content" />
-</LinearLayout>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:text="Hướng dẫn"
+                android:textStyle="bold"
+                android:textSize="28dp"
+                android:layout_gravity="center"
+                android:textColor="@color/blue"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:text="Liên hệ hỗ trợ"
+                android:textStyle="bold"
+                 android:layout_gravity="center"
+                android:textColor="@color/blue"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:text="skype: leovenus2"
+                android:textStyle="bold"
+                android:layout_gravity="center"
+                android:textColor="@color/blue"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:text="skype: nguyen.footpaths@gmail.com"
+                android:textStyle="bold"
+                android:layout_gravity="center"
+                android:textColor="@color/blue"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:text="(App nhầm mục đích giúp anh em lập trình có 1 lượng cài đặt app nhất định khi đưa lên chplay.. cùng chung tay giúp app lên top nhé!!  )"
+                android:textStyle="bold"
+                android:layout_margin="10dp"
+                android:layout_gravity="left"
+                android:textColor="@color/blue"
+                android:layout_height="wrap_content" />
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="220dp"
+                android:scaleType="fitXY"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center|top"
+                android:src="@drawable/add" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:text="- Button add dùng để đưa ứng dụng của bạn vào list ứng dụng cộng đồng. Giúp app của bạn tăng lượt cài đặt"
+                android:textColor="@color/blue"
+                android:layout_margin="5dp"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:text="** Thao tác như sau: click  button add sẽ show dialog như hình bên dưới. Trong đó package app được lấy từ manifest hoặc id trên chplay   "
+                android:textColor="@color/blue"
+                android:layout_margin="5dp"
+                android:layout_height="wrap_content" />
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="220dp"
+                android:scaleType="fitXY"
+                android:layout_gravity="center|top"
+                android:src="@drawable/dialogpkg" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:text="- Nếu truy cập chplay thì ta chọn app cần lấy package..Nhập dãy ký tự phía sau ID. Sau đó chọn Save  "
+                android:textColor="@color/blue"
+                android:layout_margin="5dp"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:text="** Ví dụ: id hình bên dưới là com.zing.zalo  "
+                android:textColor="@color/blue"
+                android:layout_margin="5dp"
+                android:layout_height="wrap_content" />
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scaleType="fitXY"
+                android:layout_marginTop="5dp"
+                android:layout_gravity="center|top"
+                android:src="@drawable/chplay" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:text="- Point thể hiện số điểm bạn đang có.. có thể tìm thấy trong quá trình cài đặt app khác bên tab install App.. Mỗi lần cài đặt tăng được 1 point"
+                android:textColor="@color/blue"
+                android:layout_margin="5dp"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:text="- Sau khi bạn có point.. bạn muốn đưa app của mình lên top bằng cách cấp point cho app đó.. point càng cao khả năng lên top càng lớn.."
+                android:textColor="@color/blue"
+                android:layout_margin="5dp"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:text="** Thao tác thực hiện: "
+                android:textColor="@color/blue"
+                android:layout_margin="5dp"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:text="- Chọn app cần cấp point.. bấm edit và nhập số point cần cấp, Lưu ý: số point cấp không được lớn hơn số point hiện có của bạn "
+                android:textColor="@color/blue"
+                android:layout_margin="5dp"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:text="** Lưu ý: "
+                android:textColor="@color/blue"
+                android:layout_margin="5dp"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:text="- Mỗi lần app của bạn được cài thì app của bạn bị trừ 1 điểm.. muốn app bạn luôn ở top thì bạn hãy cấp điểm tiếp cho app đó.: "
+                android:textColor="@color/blue"
+                android:layout_margin="5dp"
+                android:layout_height="wrap_content" />
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="220dp"
+                android:scaleType="fitXY"
+                android:layout_marginTop="5dp"
+                android:layout_gravity="center|top"
+                android:src="@drawable/dialogpoint" />
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="220dp"
+                android:scaleType="fitXY"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="2dp"
+                android:layout_gravity="center|top"
+                android:src="@drawable/install" />
+
+
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>

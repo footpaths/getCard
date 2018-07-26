@@ -4,17 +4,12 @@ import android.os.Bundle
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
-import android.content.Intent
 import android.view.Menu
 import android.view.MenuItem
-import com.google.firebase.auth.FirebaseAuth
-import com.facebook.login.LoginManager
 import vn.dhstudio.topinstall.Utils.MoveScreen
 import vn.dhstudio.topinstall.fragment.ChangeCardFragment
 import vn.dhstudio.topinstall.fragment.ReceivePointsFragment
-import vn.dhstudio.topinstall.fragment.SpinFragment
-import android.content.DialogInterface
-import androidx.appcompat.app.AlertDialog
+import vn.dhstudio.topinstall.fragment.GuideFragment
 import com.crashlytics.android.Crashlytics
 import io.fabric.sdk.android.Fabric
 
@@ -37,7 +32,7 @@ class MainActivity : AppCompatActivity() {
             R.id.navigation_notifications -> {
               //  moveScreen = MoveScreen(this@MainActivity)
 
-                moveScreen!!.firstMoveFragment(R.id.content, SpinFragment())
+                moveScreen!!.firstMoveFragment(R.id.content, GuideFragment())
                 return@OnNavigationItemSelectedListener true
             }
         }
